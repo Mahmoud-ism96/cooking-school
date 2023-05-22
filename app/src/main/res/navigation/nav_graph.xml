@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.mycook.SignInFragment"
+        android:name="com.example.mycook.startup.view.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" />
     <fragment
         android:id="@+id/startupFragment"
-        android:name="com.example.mycook.StartupFragment"
+        android:name="com.example.mycook.startup.view.StartupFragment"
         android:label="fragment_startup"
         tools:layout="@layout/fragment_startup" >
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.mycook.SignUpFragment"
+        android:name="com.example.mycook.startup.view.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
 </navigation>

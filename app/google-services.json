@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "338610626135",
+    "project_id": "my-cook-1f0fa",
+    "storage_bucket": "my-cook-1f0fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338610626135:android:892db245a640ee83e14d12",
+        "android_client_info": {
+          "package_name": "com.example.mycook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338610626135-q2t5qhshs30ctp526s558gc4u05egjp0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mycook",
+            "certificate_hash": "738b8913bfd12cff8946322a6d70bb4a41e5e078"
+          }
+        },
+        {
+          "client_id": "338610626135-gh34t0iftumcemh2i22047m6uma8dvgl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwZpRFDZe6MJvUo5hIgVd3DmVS7qCRKFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338610626135-gh34t0iftumcemh2i22047m6uma8dvgl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
