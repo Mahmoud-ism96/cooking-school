@@ -9,7 +9,6 @@
         <item name="colorSecondaryVariant">@color/secondary_variant</item>
     </style>
 
-
     <style name="Widget.Material3.BottomNavigationView.ActiveIndicator" parent="">
         <item name="android:width">@dimen/m3_bottom_nav_item_active_indicator_width</item>
         <item name="android:height">@dimen/m3_bottom_nav_item_active_indicator_height</item>

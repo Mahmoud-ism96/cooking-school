@@ -1,4 +1,4 @@
-package com.example.mycook.startup.view;
+package com.example.mycook.startup.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

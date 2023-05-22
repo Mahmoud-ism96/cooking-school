@@ -1,4 +1,4 @@
-package com.example.mycook.startup.view;
+package com.example.mycook.startup.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.mycook.R;
-import com.example.mycook.StartupFragmentDirections;
 import com.example.mycook.main.view.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -91,7 +90,7 @@ public class StartupFragment extends Fragment {
         btn_email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(com.example.mycook.StartupFragmentDirections.actionStartupFragmentToSignUpFragment());
+                Navigation.findNavController(view).navigate(StartupFragmentDirections.actionStartupFragmentToSignUpFragment());
             }
         });
 
