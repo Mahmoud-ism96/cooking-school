@@ -9,7 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MealsAPI implements RemoteSource {
-    public static String BASE_URL = "https://themealdb.com/api/json/v1/1/";
+    public static String BASE_URL = "https://themealdb.com/";
     private static Retrofit retrofit;
     private static MealsAPI client = null;
 
@@ -32,7 +32,7 @@ public class MealsAPI implements RemoteSource {
 
     public static void enqueue(NetworkDelegate networkDelegate) {
         ApiInterface apiService = MealsAPI.getClient().create(ApiInterface.class);
-        Call<Meals> call = apiService.getProducts();
+        Call<Meals> call = apiService.getMeals();
         call.enqueue(new Callback<Meals>() {
             @Override
             public void onResponse(Call<Meals> call, Response<Meals> response) {

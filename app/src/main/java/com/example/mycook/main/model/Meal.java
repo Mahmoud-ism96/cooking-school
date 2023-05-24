@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "meals")
 public class Meal {
-    @PrimaryKey
+    @PrimaryKey (autoGenerate = true)
     @NonNull
     @SerializedName("idMeal")
     @ColumnInfo(name = "mealID")
