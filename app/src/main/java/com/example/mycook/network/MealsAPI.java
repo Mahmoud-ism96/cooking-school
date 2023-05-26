@@ -9,7 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MealsAPI implements RemoteSource {
-    public static String BASE_URL = "https://themealdb.com/";
+    public static String BASE_URL = "https://themealdb.com/api/json/v1/1/";
     private static Retrofit retrofit;
     private static MealsAPI client = null;
 

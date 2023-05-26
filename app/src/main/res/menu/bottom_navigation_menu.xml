@@ -13,5 +13,5 @@
         android:id="@+id/navigation_favourites"
         android:enabled="true"
         android:icon="@drawable/collections_bookmark_white_24dp"
-        android:title="Bookmarks"/>
+        android:title="Favourites" />
 </menu>

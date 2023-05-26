@@ -65,7 +65,7 @@ public class SignInFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
-        et_email = view.findViewById(R.id.et_signin_email);
+        et_email = view.findViewById(R.id.et_recipe);
         et_password = view.findViewById(R.id.et_signin_password);
         btn_submit = view.findViewById(R.id.btn_signin);
 
