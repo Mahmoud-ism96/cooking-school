@@ -1,6 +1,6 @@
-package com.example.mycook.main.network;
+package com.example.mycook.network;
 
-import com.example.mycook.main.model.Meals;
+import com.example.mycook.model.Meals;
 
 public interface NetworkDelegate {
     public void onSuccessResult(Meals meals);

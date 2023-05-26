@@ -1,8 +1,8 @@
-package com.example.mycook.main.model;
+package com.example.mycook.model;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mycook.main.network.NetworkDelegate;
+import com.example.mycook.network.NetworkDelegate;
 
 import java.util.List;
 

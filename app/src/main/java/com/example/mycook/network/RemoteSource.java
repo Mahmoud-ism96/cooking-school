@@ -1,4 +1,4 @@
-package com.example.mycook.main.network;
+package com.example.mycook.network;
 
 public interface RemoteSource {
     void dailyInspirationEnqueueCall(NetworkDelegate networkDelegate);

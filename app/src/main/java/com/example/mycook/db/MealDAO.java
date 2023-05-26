@@ -1,4 +1,4 @@
-package com.example.mycook.main.db;
+package com.example.mycook.db;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -6,7 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.mycook.main.model.Meal;
+import com.example.mycook.model.Meal;
 
 import java.util.List;
 

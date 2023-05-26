@@ -1,4 +1,4 @@
-package com.example.mycook.main.model;
+package com.example.mycook.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

@@ -1,4 +1,4 @@
-package com.example.mycook.main.db;
+package com.example.mycook.db;
 
 import android.content.Context;
 
@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.mycook.main.model.Meal;
+import com.example.mycook.model.Meal;
 
 @Database(entities = {Meal.class}, version = 1)
 public abstract class MealDatabase extends RoomDatabase {

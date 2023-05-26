@@ -1,4 +1,4 @@
-package com.example.mycook.main.model;
+package com.example.mycook.model;
 
 import java.util.List;
 

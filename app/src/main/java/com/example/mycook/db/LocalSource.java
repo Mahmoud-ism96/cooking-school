@@ -1,8 +1,8 @@
-package com.example.mycook.main.db;
+package com.example.mycook.db;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mycook.main.model.Meal;
+import com.example.mycook.model.Meal;
 
 import java.util.List;
 

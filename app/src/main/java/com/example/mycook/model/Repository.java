@@ -1,12 +1,12 @@
-package com.example.mycook.main.model;
+package com.example.mycook.model;
 
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mycook.main.db.LocalSource;
-import com.example.mycook.main.network.NetworkDelegate;
-import com.example.mycook.main.network.RemoteSource;
+import com.example.mycook.db.LocalSource;
+import com.example.mycook.network.NetworkDelegate;
+import com.example.mycook.network.RemoteSource;
 
 import java.util.List;
 
