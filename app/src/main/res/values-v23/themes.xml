@@ -1,8 +1,8 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
   <style name="Theme.MyCook" parent="Base.Theme.MyCook">
-    <!-- Transparent system bars for edge-to-edge. -->
-    <item name="android:navigationBarColor">@android:color/transparent</item>
-    <item name="android:statusBarColor">@android:color/transparent</item>
-    <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+    <item name="colorPrimary">@color/primary</item>
+    <item name="colorPrimaryVariant">@color/primary_variant</item>
+    <item name="colorSecondary">@color/secondary</item>
+    <item name="colorSecondaryVariant">@color/secondary_variant</item>
   </style>
 </resources>
