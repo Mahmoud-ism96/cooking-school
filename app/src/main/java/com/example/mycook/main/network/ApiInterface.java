@@ -8,9 +8,6 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
 
-    @GET("meals")
-    Call<Meals> getMeals();
-
     @GET("api/json/v1/1/random.php")
     Call<Meals> getDailyInspiration();
 
@@ -23,6 +20,6 @@ public interface ApiInterface {
     @GET("api/json/v1/1/filter.php?c={category}")
     Call<Meals> getMealsByCategory(@Path("category")String category);
 
-    @GET("images/ingredients/{image}")
+    @GET("images/ingredients/{image}") //TODO: get the image from the API
     Call<Meals> getIngredientImage(@Path("image")String image);
 }

@@ -31,8 +31,23 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public void getAllMeals(NetworkDelegate networkDelegate) {
-        remoteSource.enqueueCall(networkDelegate);
+    public void getDailyInspiration(NetworkDelegate networkDelegate) {
+        remoteSource.dailyInspirationEnqueueCall(networkDelegate);
+    }
+
+    @Override
+    public void getMealsByArea(NetworkDelegate networkDelegate, String area) {
+        remoteSource.mealsByAreaEnqueueCall(networkDelegate, area);
+    }
+
+    @Override
+    public void getMealsByIngredient(NetworkDelegate networkDelegate, String ingredient) {
+        remoteSource.mealsByIngredientEnqueueCall(networkDelegate, ingredient);
+    }
+
+    @Override
+    public void getMealsByCategory(NetworkDelegate networkDelegate, String category) {
+        remoteSource.mealsByCategoryEnqueueCall(networkDelegate, category);
     }
 
     @Override
