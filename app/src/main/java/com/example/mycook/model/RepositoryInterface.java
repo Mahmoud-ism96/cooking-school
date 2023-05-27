@@ -9,11 +9,17 @@ import java.util.List;
 public interface RepositoryInterface {
     public void getDailyInspiration(NetworkDelegate networkDelegate);
 
-    public void getMealsByArea(NetworkDelegate networkDelegate, String area);
-
     public void getMealsByIngredient(NetworkDelegate networkDelegate, String ingredient);
 
     public void getMealsByCategory(NetworkDelegate networkDelegate, String category);
+
+    public void getMealsByArea(NetworkDelegate networkDelegate, String area);
+
+    public void getIngredients(NetworkDelegate networkDelegate);
+
+    public void getCategories(NetworkDelegate networkDelegate);
+
+    public void getAreas(NetworkDelegate networkDelegate);
 
     public void insertMeal(Meal meal);
 

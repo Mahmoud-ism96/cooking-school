@@ -9,6 +9,9 @@ public class Meals {
         this.meals = meals;
     }
 
+    public Meals() {
+    }
+
     public List<Meal> getMeals() {
         return meals;
     }

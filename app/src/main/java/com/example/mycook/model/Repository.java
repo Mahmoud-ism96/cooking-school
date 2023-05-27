@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Repository implements RepositoryInterface {
 
+    String TAG = "REPOSITORY";
     private Context context;
     RemoteSource remoteSource;
     LocalSource localSource;
@@ -48,6 +49,21 @@ public class Repository implements RepositoryInterface {
     @Override
     public void getMealsByCategory(NetworkDelegate networkDelegate, String category) {
         remoteSource.mealsByCategoryEnqueueCall(networkDelegate, category);
+    }
+
+    @Override
+    public void getIngredients(NetworkDelegate networkDelegate) {
+        remoteSource.getIngredientsEnqueueCall(networkDelegate);
+    }
+
+    @Override
+    public void getCategories(NetworkDelegate networkDelegate) {
+        remoteSource.getCategoriesEnqueueCall(networkDelegate);
+    }
+
+    @Override
+    public void getAreas(NetworkDelegate networkDelegate) {
+        remoteSource.getAreasEnqueueCall(networkDelegate);
     }
 
     @Override

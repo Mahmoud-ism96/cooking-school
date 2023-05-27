@@ -9,4 +9,10 @@ public interface RemoteSource {
 
     void mealsByCategoryEnqueueCall(NetworkDelegate networkDelegate, String category);
 
+    void getIngredientsEnqueueCall(NetworkDelegate networkDelegate);
+
+    void getCategoriesEnqueueCall(NetworkDelegate networkDelegate);
+
+    void getAreasEnqueueCall(NetworkDelegate networkDelegate);
+
 }

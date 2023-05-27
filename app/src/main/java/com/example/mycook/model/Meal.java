@@ -271,6 +271,9 @@ public class Meal {
     }
 
     public String getArea() {
+        if (area == null) {
+            area = "";
+        }
         return area;
     }
 
@@ -279,6 +282,9 @@ public class Meal {
     }
 
     public String getCategory() {
+        if (category == null) {
+            category = "";
+        }
         return category;
     }
 
@@ -631,6 +637,9 @@ public class Meal {
     }
 
     public String getIngredient() {
+        if (ingredient == null) {
+            ingredient = "";
+        }
         return ingredient;
     }
 
@@ -639,6 +648,9 @@ public class Meal {
     }
 
     public String getWeekDay() {
+        if (weekDay == null) {
+            weekDay = "";
+        }
         return weekDay;
     }
 

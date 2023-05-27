@@ -6,12 +6,12 @@
     app:startDestination="@id/navigation_home">
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.mycook.main.view.fragments.HomeFragment"
+        android:name="com.example.mycook.main.view.fragments.home.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.mycook.main.view.fragments.SearchFragment"
+        android:name="com.example.mycook.main.view.fragments.search.view.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
         <action
@@ -24,12 +24,12 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_favourites"
-        android:name="com.example.mycook.main.view.fragments.FavouritesFragment"
+        android:name="com.example.mycook.main.view.fragments.favourites.FavouritesFragment"
         android:label="fragment_favourites"
         tools:layout="@layout/fragment_favourites" />
     <fragment
         android:id="@+id/ingredientsFragment"
-        android:name="com.example.mycook.main.view.fragments.IngredientsFragment"
+        android:name="com.example.mycook.main.view.fragments.ingredients.IngredientsFragment"
         android:label="fragment_ingredients"
         tools:layout="@layout/fragment_ingredients" />
 </navigation>

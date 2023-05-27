@@ -1,4 +1,4 @@
-package com.example.mycook.main.view.fragments;
+package com.example.mycook.main.view.fragments.favourites;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
