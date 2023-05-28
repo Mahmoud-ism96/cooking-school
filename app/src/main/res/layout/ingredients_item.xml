@@ -2,14 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/c_search_layout"
-    android:layout_width="wrap_content"
+    android:id="@+id/c_meal_ingredient_layout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:layout_gravity="center|center_horizontal|center_vertical"
     android:layout_marginHorizontal="16dp"
+    android:layout_marginBottom="8dp"
     android:foregroundGravity="center_vertical|center|center_horizontal"
     app:layout_anchorGravity="center|center_horizontal|center_vertical">
 
@@ -17,10 +18,9 @@
         android:id="@+id/iv_meal_ingredient_thumbnail"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/search_item_ripple"
-        android:clickable="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/icons8google48" />
@@ -29,13 +29,30 @@
         android:id="@+id/tv_meal_ingredient"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
         android:ellipsize="end"
-        android:gravity="center"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_meal_ingredient_thumbnail"
-        tools:text="item" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_meal_ingredient_thumbnail"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toEndOf="@+id/iv_meal_ingredient_thumbnail"
+        app:layout_constraintTop_toTopOf="@+id/iv_meal_ingredient_thumbnail"
+        tools:text="Measurement" />
+
+    <TextView
+        android:id="@+id/tv_meal_measurement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="@+id/iv_meal_ingredient_thumbnail"
+        tools:text="Ingredient" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.60" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

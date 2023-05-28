@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.view.fragments.home.presenter.HomePresenter;
 import com.example.mycook.main.view.fragments.home.presenter.HomePresenterInterface;
+import com.example.mycook.main.view.fragments.home.view.HomeFragmentDirections.ActionNavigationHomeToMealDetailsFragment;
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements OnFavClickListener, HomeInterface {
+public class HomeFragment extends Fragment implements OnDailyMealClickListener, HomeInterface {
 
     HomePresenterInterface homePresenterInterface;
     CarouselRecyclerview recyclerView;
@@ -60,6 +62,12 @@ public class HomeFragment extends Fragment implements OnFavClickListener, HomeIn
     @Override
     public void onClick(Meal meal) {
         addMeal(meal);
+    }
+
+    @Override
+    public void onMealClick(Meal meal) {
+        ActionNavigationHomeToMealDetailsFragment navigationAction = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(meal);
+        Navigation.findNavController(getView()).navigate(navigationAction);
     }
 
     @Override

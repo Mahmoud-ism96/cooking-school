@@ -41,8 +41,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             super(itemView);
             layout = itemView;
             cLayout = itemView.findViewById(R.id.c_search_layout);
-            tv_Title = itemView.findViewById(R.id.tv_search_title);
-            iv_Thumbnail = itemView.findViewById(R.id.iv_search_thumbnail);
+            tv_Title = itemView.findViewById(R.id.tv_meal_ingredient);
+            iv_Thumbnail = itemView.findViewById(R.id.iv_meal_ingredient_thumbnail);
         }
     }
 

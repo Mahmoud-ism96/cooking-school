@@ -1,5 +1,8 @@
 package com.example.mycook.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -8,7 +11,130 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "meals")
-public class Meal {
+public class Meal implements Parcelable {
+
+    protected Meal(Parcel in) {
+        mealID = in.readInt();
+        name = in.readString();
+        area = in.readString();
+        category = in.readString();
+        instructions = in.readString();
+        thumbnail = in.readString();
+        ingredient1 = in.readString();
+        ingredient2 = in.readString();
+        ingredient3 = in.readString();
+        ingredient4 = in.readString();
+        ingredient5 = in.readString();
+        ingredient6 = in.readString();
+        ingredient7 = in.readString();
+        ingredient8 = in.readString();
+        ingredient9 = in.readString();
+        ingredient10 = in.readString();
+        ingredient11 = in.readString();
+        ingredient12 = in.readString();
+        ingredient13 = in.readString();
+        ingredient14 = in.readString();
+        ingredient15 = in.readString();
+        ingredient16 = in.readString();
+        ingredient17 = in.readString();
+        ingredient18 = in.readString();
+        ingredient19 = in.readString();
+        ingredient20 = in.readString();
+        measurement1 = in.readString();
+        measurement2 = in.readString();
+        measurement3 = in.readString();
+        measurement4 = in.readString();
+        measurement5 = in.readString();
+        measurement6 = in.readString();
+        measurement7 = in.readString();
+        measurement8 = in.readString();
+        measurement9 = in.readString();
+        measurement10 =in.readString();
+        measurement11 = in.readString();
+        measurement12 = in.readString();
+        measurement13 = in.readString();
+        measurement14 = in.readString();
+        measurement15 = in.readString();
+        measurement16 = in.readString();
+        measurement17 = in.readString();
+        measurement18 = in.readString();
+        measurement19 = in.readString();
+        measurement20 = in.readString();
+        youtubeURL = in.readString();
+        ingredient = in.readString();
+        weekDay = in.readString();
+    }
+
+    public static final Creator<Meal> CREATOR = new Creator<Meal>() {
+        @Override
+        public Meal createFromParcel(Parcel in) {
+            return new Meal(in);
+        }
+
+        @Override
+        public Meal[] newArray(int size) {
+            return new Meal[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int i) {
+        dest.writeInt(mealID);
+        dest.writeString(name);
+        dest.writeString(area);
+        dest.writeString(category);
+        dest.writeString(instructions);
+        dest.writeString(thumbnail);
+        dest.writeString(ingredient1);
+        dest.writeString(ingredient2);
+        dest.writeString(ingredient3);
+        dest.writeString(ingredient4);
+        dest.writeString(ingredient5);
+        dest.writeString(ingredient6);
+        dest.writeString(ingredient7);
+        dest.writeString(ingredient8);
+        dest.writeString(ingredient9);
+        dest.writeString(ingredient10);
+        dest.writeString(ingredient11);
+        dest.writeString(ingredient12);
+        dest.writeString(ingredient13);
+        dest.writeString(ingredient14);
+        dest.writeString(ingredient15);
+        dest.writeString(ingredient16);
+        dest.writeString(ingredient17);
+        dest.writeString(ingredient18);
+        dest.writeString(ingredient19);
+        dest.writeString(ingredient20);
+        dest.writeString(measurement1);
+        dest.writeString(measurement2);
+        dest.writeString(measurement3);
+        dest.writeString(measurement4);
+        dest.writeString(measurement5);
+        dest.writeString(measurement6);
+        dest.writeString(measurement7);
+        dest.writeString(measurement8);
+        dest.writeString(measurement9);
+        dest.writeString(measurement10);
+        dest.writeString(measurement11);
+        dest.writeString(measurement12);
+        dest.writeString(measurement13);
+        dest.writeString(measurement14);
+        dest.writeString(measurement15);
+        dest.writeString(measurement16);
+        dest.writeString(measurement17);
+        dest.writeString(measurement18);
+        dest.writeString(measurement19);
+        dest.writeString(measurement20);
+        dest.writeString(youtubeURL);
+        dest.writeString(ingredient);
+        dest.writeString(weekDay);
+    }
+
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @SerializedName("idMeal")
@@ -657,4 +783,5 @@ public class Meal {
     public void setWeekDay(String calenderDay) {
         this.weekDay = calenderDay;
     }
+
 }

@@ -24,9 +24,9 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
     private static final String TAG = "DailyInspirationAdapter";
     private Context context;
     private List<Meal> meals;
-    private OnFavClickListener listener;
+    private OnDailyMealClickListener listener;
 
-    public DailyInspirationAdapter(Context context, List<Meal> meals, OnFavClickListener listener) {
+    public DailyInspirationAdapter(Context context, List<Meal> meals, OnDailyMealClickListener listener) {
         this.context = context;
         this.meals = meals;
         this.listener = listener;
@@ -55,7 +55,7 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
 
     @NonNull
     @Override
-    public DailyInspirationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup recyclerView, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
         View v = inflater.inflate(R.layout.card_item, recyclerView, false);
         ViewHolder viewHolder = new ViewHolder(v);
@@ -63,14 +63,21 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DailyInspirationAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tv_Title.setText(meals.get(position).getName());
         holder.tv_Area.setText(meals.get(position).getArea());
         holder.tv_Category.setText(meals.get(position).getCategory());
         Glide.with(context).load(meals.get(position).getThumbnail())
-                .apply(new RequestOptions().override(500, 500))
+                .apply(new RequestOptions().override(1000, 1000))
                 .placeholder(R.drawable.loading_thumbnail)
                 .error(R.drawable.error_thumbnail).into(holder.iv_Thumbnail);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onMealClick(meals.get(position));
+            }
+        });
+
     }
 
     @Override

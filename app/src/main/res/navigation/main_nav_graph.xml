@@ -8,7 +8,16 @@
         android:id="@+id/navigation_home"
         android:name="com.example.mycook.main.view.fragments.home.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.mycook.main.view.fragments.search.view.SearchFragment"
@@ -20,16 +29,35 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_search" />
     </fragment>
     <fragment
         android:id="@+id/navigation_favourites"
         android:name="com.example.mycook.main.view.fragments.favourites.FavouritesFragment"
         android:label="fragment_favourites"
-        tools:layout="@layout/fragment_favourites" />
+        tools:layout="@layout/fragment_favourites" >
+        <action
+            android:id="@+id/action_navigation_favourites_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/navigation_favourites" />
+    </fragment>
     <fragment
         android:id="@+id/ingredientsFragment"
         android:name="com.example.mycook.main.view.fragments.ingredients.IngredientsFragment"
         android:label="fragment_ingredients"
         tools:layout="@layout/fragment_ingredients" />
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.example.mycook.main.view.fragments.meal_details.view.MealDetailsFragment"
+        android:label="fragment_meal_details"
+        tools:layout="@layout/fragment_meal_details" >
+        <argument
+            android:name="meal_detail"
+            app:argType="com.example.mycook.model.Meal" />
+    </fragment>
 </navigation>
