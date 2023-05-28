@@ -31,6 +31,9 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/navigation_search" />
+        <action
+            android:id="@+id/action_navigation_search_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_favourites"
@@ -50,7 +53,11 @@
         android:id="@+id/ingredientsFragment"
         android:name="com.example.mycook.main.view.fragments.ingredients.view.IngredientsFragment"
         android:label="fragment_ingredients"
-        tools:layout="@layout/fragment_ingredients" />
+        tools:layout="@layout/fragment_ingredients" >
+        <action
+            android:id="@+id/action_ingredientsFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
         android:name="com.example.mycook.main.view.fragments.meal_details.view.MealDetailsFragment"
@@ -59,5 +66,23 @@
         <argument
             android:name="meal_detail"
             app:argType="com.example.mycook.model.Meal" />
+        <argument
+            android:name="ResultType"
+            app:argType="com.example.mycook.ResultType" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.example.mycook.main.view.fragments.result.view.SearchResultFragment"
+        android:label="fragment_search_result"
+        tools:layout="@layout/fragment_search_result" >
+        <argument
+            android:name="SearchData"
+            app:argType="string" />
+        <argument
+            android:name="SearchType"
+            app:argType="com.example.mycook.SearchType" />
+        <action
+            android:id="@+id/action_searchResultFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
     </fragment>
 </navigation>

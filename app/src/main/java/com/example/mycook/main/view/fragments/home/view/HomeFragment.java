@@ -1,5 +1,7 @@
 package com.example.mycook.main.view.fragments.home.view;
 
+import static com.example.mycook.ResultType.LOCAL_RESULT;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,19 +62,20 @@ public class HomeFragment extends Fragment implements OnDailyMealClickListener, 
     }
 
     @Override
-    public void onClick(Meal meal) {
+    public void onFavClick(Meal meal) {
         addMeal(meal);
     }
 
     @Override
     public void onMealClick(Meal meal) {
-        ActionNavigationHomeToMealDetailsFragment navigationAction = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(meal);
+        ActionNavigationHomeToMealDetailsFragment navigationAction = HomeFragmentDirections.actionNavigationHomeToMealDetailsFragment(meal, LOCAL_RESULT);
         Navigation.findNavController(getView()).navigate(navigationAction);
     }
 
     @Override
     public void showDailyInspiration(List<Meal> meal) {
-        dailyMeals.add(meal.get(0));
+        if (!dailyMeals.contains(meal))
+            dailyMeals.add(meal.get(0));
         dailyInspirationAdapter.updateList(dailyMeals);
         dailyInspirationAdapter.notifyDataSetChanged();
     }

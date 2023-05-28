@@ -9,7 +9,7 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:layout_gravity="center|center_horizontal|center_vertical"
-    android:layout_marginHorizontal="16dp"
+
     android:layout_marginBottom="8dp"
     android:foregroundGravity="center_vertical|center|center_horizontal"
     app:layout_anchorGravity="center|center_horizontal|center_vertical">
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="2"
         app:layout_constraintBottom_toBottomOf="@+id/iv_meal_ingredient_thumbnail"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintStart_toEndOf="@+id/iv_meal_ingredient_thumbnail"
@@ -40,10 +40,13 @@
 
     <TextView
         android:id="@+id/tv_meal_measurement"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="@+id/iv_meal_ingredient_thumbnail"
         tools:text="Ingredient" />

@@ -4,21 +4,24 @@ import com.example.mycook.model.Meals;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
 
     @GET("random.php")
     Call<Meals> getDailyInspiration();
 
-    @GET("filter.php?i={ingredient}")
-    Call<Meals> getMealsByIngredient(@Path("ingredient") String ingredient);
+    @GET("lookup.php")
+    Call<Meals> getMealById(@Query("i") int id);
 
-    @GET("filter.php?c={category}")
-    Call<Meals> getMealsByCategory(@Path("category") String category);
+    @GET("filter.php")
+    Call<Meals> getMealsByIngredient(@Query("i") String ingredient);
 
-    @GET("filter.php?a={area}")
-    Call<Meals> getMealsByArea(@Path("area") String area);
+    @GET("filter.php")
+    Call<Meals> getMealsByCategory(@Query("c") String category);
+
+    @GET("filter.php")
+    Call<Meals> getMealsByArea(@Query("a") String area);
 
     @GET("list.php?i=list")
     Call<Meals> getIngredients();

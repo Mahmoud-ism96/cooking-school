@@ -9,6 +9,8 @@ import java.util.List;
 public interface RepositoryInterface {
     public void getDailyInspiration(NetworkDelegate networkDelegate);
 
+    public void getMealById(NetworkDelegate networkDelegate, int id);
+
     public void getMealsByIngredient(NetworkDelegate networkDelegate, String ingredient);
 
     public void getMealsByCategory(NetworkDelegate networkDelegate, String category);

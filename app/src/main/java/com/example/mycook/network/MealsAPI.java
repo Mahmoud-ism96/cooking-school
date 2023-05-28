@@ -13,30 +13,47 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MealsAPI implements RemoteSource {
 
     private static String TAG = "MEALS_API";
-    public static String BASE_URL = "https://themealdb.com/api/json/v1/1/";
+    private String BASE_URL = "https://themealdb.com/api/json/v1/1/";
     private static MealsAPI client = null;
     private static ApiInterface apiService;
 
     private MealsAPI() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(loggingInterceptor).build();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).client(client).addConverterFactory(GsonConverterFactory.create()).build();
+
+        apiService = retrofit.create(ApiInterface.class);
     }
 
     public static MealsAPI getInstance() {
         if (client == null) {
             client = new MealsAPI();
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(loggingInterceptor).build();
-
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).client(client).addConverterFactory(GsonConverterFactory.create()).build();
-
-            apiService = retrofit.create(ApiInterface.class);
         }
         return client;
     }
 
     public static void dailyInspirationEnqueue(NetworkDelegate networkDelegate) {
         Call<Meals> call = apiService.getDailyInspiration();
+        call.enqueue(new Callback<Meals>() {
+            @Override
+            public void onResponse(Call<Meals> call, Response<Meals> response) {
+                if (response.isSuccessful()) {
+                    networkDelegate.onSuccessResult(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Meals> call, Throwable t) {
+                networkDelegate.onFailureResult(t.getMessage());
+            }
+        });
+    }
+
+    public static void mealsByIdEnqueue(NetworkDelegate networkDelegate, int id) {
+        Call<Meals> call = apiService.getMealById(id);
         call.enqueue(new Callback<Meals>() {
             @Override
             public void onResponse(Call<Meals> call, Response<Meals> response) {
@@ -157,6 +174,11 @@ public class MealsAPI implements RemoteSource {
     @Override
     public void dailyInspirationEnqueueCall(NetworkDelegate networkDelegate) {
         dailyInspirationEnqueue(networkDelegate);
+    }
+
+    @Override
+    public void mealByIdEnqueueCall(NetworkDelegate networkDelegate, int id) {
+        mealsByIdEnqueue(networkDelegate, id);
     }
 
     @Override

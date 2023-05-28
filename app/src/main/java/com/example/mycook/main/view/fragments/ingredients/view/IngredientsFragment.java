@@ -63,7 +63,7 @@ public class IngredientsFragment extends Fragment implements OnIngredientClickLi
     }
 
     @Override
-    public void onIngredientClick(Meal meal) {
+    public void onIngredientClick(String ingredient) {
 
     }
 }

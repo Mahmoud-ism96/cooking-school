@@ -7,7 +7,7 @@
     android:layout_width="match_parent">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_view"
+        android:id="@+id/search_result_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checkable="true"
@@ -22,14 +22,14 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/card_thumbnail"
+                android:id="@+id/search_result_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="330dp"
                 android:scaleType="centerCrop"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageButton
-                android:id="@+id/btn_card_fav"
+                android:id="@+id/btn_search_result_fav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
@@ -46,43 +46,21 @@
                 android:background="#80000000">
 
                 <TextView
-                    android:id="@+id/card_title"
+                    android:id="@+id/search_result_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
                     android:paddingTop="8dp"
                     android:textColor="#FFFFFF"
                     android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Title" />
-
-                <TextView
-                    android:id="@+id/card_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/card_title"
-                    app:layout_constraintTop_toBottomOf="@+id/card_title"
-                    tools:text="Category" />
-
-                <TextView
-                    android:id="@+id/card_area"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/card_category"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/card_category"
-                    tools:text="Area" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>

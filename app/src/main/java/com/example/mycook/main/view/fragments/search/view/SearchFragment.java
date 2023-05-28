@@ -1,5 +1,9 @@
 package com.example.mycook.main.view.fragments.search.view;
 
+import static com.example.mycook.SearchType.SEARCH_BY_AREA;
+import static com.example.mycook.SearchType.SEARCH_BY_CATEGORY;
+import static com.example.mycook.SearchType.SEARCH_BY_INGREDIENT;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +23,7 @@ import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.view.fragments.ingredients.view.OnIngredientClickListener;
 import com.example.mycook.main.view.fragments.search.presenter.SearchPresenter;
 import com.example.mycook.main.view.fragments.search.presenter.SearchPresenterInterface;
+import com.example.mycook.main.view.fragments.search.view.SearchFragmentDirections.ActionNavigationSearchToSearchResultFragment;
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
@@ -48,8 +53,7 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
@@ -108,8 +112,9 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
     }
 
     @Override
-    public void onIngredientClick(Meal meal) {
-
+    public void onIngredientClick(String ingredient) {
+        ActionNavigationSearchToSearchResultFragment action = SearchFragmentDirections.actionNavigationSearchToSearchResultFragment(ingredient, SEARCH_BY_INGREDIENT);
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     public void onViewAllIngredientsClick() {
@@ -123,9 +128,21 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
     }
 
     @Override
+    public void onCategoriesClick(String category) {
+        ActionNavigationSearchToSearchResultFragment action = SearchFragmentDirections.actionNavigationSearchToSearchResultFragment(category, SEARCH_BY_CATEGORY);
+        Navigation.findNavController(getView()).navigate(action);
+    }
+
+    @Override
     public void showAreas(List<Meal> meal) {
         Log.i(TAG, meal.get(0).getArea());
         areaAdapter.updateList(meal);
         areaAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAreaClick(String area) {
+        ActionNavigationSearchToSearchResultFragment action = SearchFragmentDirections.actionNavigationSearchToSearchResultFragment(area, SEARCH_BY_AREA);
+        Navigation.findNavController(getView()).navigate(action);
     }
 }

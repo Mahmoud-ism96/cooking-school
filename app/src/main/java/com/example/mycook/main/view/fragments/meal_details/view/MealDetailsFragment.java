@@ -1,5 +1,7 @@
 package com.example.mycook.main.view.fragments.meal_details.view;
 
+import static com.example.mycook.ResultType.LOCAL_RESULT;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mycook.R;
+import com.example.mycook.ResultType;
+import com.example.mycook.db.ConcreteLocalSource;
+import com.example.mycook.main.view.fragments.meal_details.presenter.MealDetailsPresenter;
+import com.example.mycook.main.view.fragments.meal_details.presenter.MealDetailsPresenterInterface;
 import com.example.mycook.model.Ingredient;
 import com.example.mycook.model.Meal;
+import com.example.mycook.model.Repository;
+import com.example.mycook.network.MealsAPI;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -26,7 +34,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealDetailsFragment extends Fragment {
+public class MealDetailsFragment extends Fragment implements MealDetailsInterface, OnFavClickListener {
 
     String TAG = "MealDetailsFragment";
     private ImageView iv_thumbnail;
@@ -36,9 +44,12 @@ public class MealDetailsFragment extends Fragment {
     private TextView tv_description;
     private YouTubePlayerView yt_player;
     Meal meal;
+    ResultType resultType;
     RecyclerView rv_ingredients;
     MealIngredientsAdapter mealIngredientsAdapter;
     List<Ingredient> ingredientsList;
+
+    MealDetailsPresenterInterface mealDetailsPresenterInterface;
 
 
     public MealDetailsFragment() {
@@ -55,23 +66,51 @@ public class MealDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        meal = MealDetailsFragmentArgs.fromBundle(getArguments()).getMealDetail();
+        resultType = MealDetailsFragmentArgs.fromBundle(getArguments()).getResultType();
+
+        initViews(view);
+
+        ingredientsList = new ArrayList<>();
+        if (resultType == LOCAL_RESULT)
+            setupMeal();
+        else {
+            mealDetailsPresenterInterface = new MealDetailsPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
+            mealDetailsPresenterInterface.getMealById(meal.getMealID());
+        }
+
+    }
+
+    private void initViews(@NonNull View view) {
         iv_thumbnail = view.findViewById(R.id.iv_meal_thumbnail);
         tv_title = view.findViewById(R.id.tv_meal_title);
         tv_category = view.findViewById(R.id.tv_meal_category);
         tv_area = view.findViewById(R.id.tv_meal_area);
         tv_description = view.findViewById(R.id.tv_meal_description);
         yt_player = view.findViewById(R.id.vw_youtube);
+        rv_ingredients = view.findViewById(R.id.rv_meal_ingredients);
+    }
 
-        meal = MealDetailsFragmentArgs.fromBundle(getArguments()).getMealDetail();
+    private void setupMeal() {
 
-        ingredientsList = new ArrayList<>();
+        assignMealToViews();
 
+        initYoutubePlayer();
+
+        setIngredients();
+
+        initRecyclerView();
+    }
+
+    private void assignMealToViews() {
         Glide.with(getContext()).load(meal.getThumbnail()).apply(new RequestOptions().override(500, 500)).placeholder(R.drawable.loading_thumbnail).error(R.drawable.error_thumbnail).into(iv_thumbnail);
         tv_title.setText(meal.getName());
         tv_category.setText(meal.getCategory());
         tv_area.setText(meal.getArea());
         tv_description.setText(meal.getInstructions());
+    }
 
+    private void initYoutubePlayer() {
         yt_player.setEnableAutomaticInitialization(true);
         getLifecycle().addObserver(yt_player);
 
@@ -80,43 +119,30 @@ public class MealDetailsFragment extends Fragment {
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
 
                 String videoId = extractVideoIdFromUrl(meal.getYoutubeURL());
-
-                youTubePlayer.loadVideo(videoId, 0);
+                if (videoId != null) {
+                    youTubePlayer.loadVideo(videoId, 0);
+                }
             }
         });
-
-        setIngredients();
-
-        rv_ingredients = view.findViewById(R.id.rv_meal_ingredients);
-        rv_ingredients.setHasFixedSize(true);
-        LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
-        ingredientsLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        rv_ingredients.setLayoutManager(ingredientsLayoutManager);
-        rv_ingredients.setNestedScrollingEnabled(false);
-
-        mealIngredientsAdapter = new MealIngredientsAdapter(getActivity(), ingredientsList);
-        rv_ingredients.setAdapter(mealIngredientsAdapter);
-
     }
 
     public void setIngredients() {
         for (int i = 1; i <= 20; i++) {
-            String ingredient = null;
-            String measurement = null;
+            String ingredient = "";
+            String measurement = "";
             try {
                 ingredient = (String) meal.getClass().getMethod("getIngredient" + i).invoke(meal);
                 measurement = (String) meal.getClass().getMethod("getMeasurement" + i).invoke(meal);
+
+                if (!ingredient.equals("")) {
+                    ingredientsList.add(new Ingredient(ingredient, measurement));
+                }
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             } catch (InvocationTargetException e) {
                 throw new RuntimeException(e);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
-            }
-
-            assert ingredient != null;
-            if (!ingredient.equals("")) {
-                ingredientsList.add(new Ingredient(ingredient, measurement));
             }
         }
     }
@@ -134,5 +160,31 @@ public class MealDetailsFragment extends Fragment {
             }
         }
         return videoId;
+    }
+
+    private void initRecyclerView() {
+        rv_ingredients.setHasFixedSize(true);
+        LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
+        ingredientsLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        rv_ingredients.setLayoutManager(ingredientsLayoutManager);
+        rv_ingredients.setNestedScrollingEnabled(false);
+
+        initAdapter();
+    }
+
+    private void initAdapter() {
+        mealIngredientsAdapter = new MealIngredientsAdapter(getActivity(), ingredientsList);
+        rv_ingredients.setAdapter(mealIngredientsAdapter);
+    }
+
+    @Override
+    public void showRemoteMealDetails(List<Meal> meal) {
+        this.meal = meal.get(0);
+        setupMeal();
+    }
+
+    @Override
+    public void addMeal(Meal meal) {
+
     }
 }

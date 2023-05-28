@@ -59,10 +59,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull IngredientAdapter.ViewHolder holder, int position) {
-        String ingredientName = meals.get(position).getIngredient();
-        String imageURL = "https://www.themealdb.com/images/ingredients/" + ingredientName + "-Small.png";
-        holder.tv_Title.setText(ingredientName);
-        Glide.with(context).load(imageURL)
+        holder.tv_Title.setText(meals.get(position).getIngredient());
+        Glide.with(context).load("https://www.themealdb.com/images/ingredients/" + meals.get(position).getIngredient() + "-Small.png")
                 .apply(new RequestOptions().override(200, 200))
                 .placeholder(R.drawable.loading_thumbnail)
                 .error(R.drawable.error_thumbnail).into(holder.iv_Thumbnail);
@@ -70,7 +68,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         holder.iv_Thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                listener.onIngredientClick(meals.get(position).getIngredient());
             }
         });
     }

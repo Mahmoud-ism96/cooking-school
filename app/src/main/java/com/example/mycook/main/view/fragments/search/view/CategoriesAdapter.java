@@ -57,10 +57,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String categoriesName = meals.get(position).getCategory();
-        String imageURL = "https://www.themealdb.com/images/category/" + categoriesName + ".png";
-        holder.tv_Title.setText(categoriesName);
-        Glide.with(context).load(imageURL).apply(new RequestOptions().override(200, 200)).placeholder(R.drawable.loading_thumbnail).error(R.drawable.error_thumbnail).into(holder.iv_Thumbnail);
+        holder.tv_Title.setText(meals.get(position).getCategory());
+        Glide.with(context).load("https://www.themealdb.com/images/category/" + meals.get(position).getCategory() + ".png").apply(new RequestOptions().override(200, 200)).placeholder(R.drawable.loading_thumbnail).error(R.drawable.error_thumbnail).into(holder.iv_Thumbnail);
+        holder.iv_Thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onCategoriesClick(meals.get(position).getCategory());
+            }
+        });
     }
 
     @Override
