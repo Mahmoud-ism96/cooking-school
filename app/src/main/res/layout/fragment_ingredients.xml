@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.view.fragments.ingredients.IngredientsFragment" >
+    tools:context=".main.view.fragments.ingredients.view.IngredientsFragment" >
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline16"
@@ -38,14 +38,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_favourite_list"
+        android:id="@+id/rv_all_ingredients_list"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/guideline19"
         app:layout_constraintEnd_toStartOf="@+id/guideline18"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
-        tools:listitem="@layout/search_item"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="4"/>
+        app:spanCount="4"
+        tools:listitem="@layout/search_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

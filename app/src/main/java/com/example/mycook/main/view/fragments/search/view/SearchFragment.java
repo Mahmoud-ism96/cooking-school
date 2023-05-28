@@ -5,15 +5,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
+import com.example.mycook.main.view.fragments.ingredients.view.OnIngredientClickListener;
 import com.example.mycook.main.view.fragments.search.presenter.SearchPresenter;
 import com.example.mycook.main.view.fragments.search.presenter.SearchPresenterInterface;
 import com.example.mycook.model.Meal;
@@ -22,7 +25,7 @@ import com.example.mycook.network.MealsAPI;
 
 import java.util.List;
 
-public class SearchFragment extends Fragment implements OnSearchItemClickListener, SearchInterface {
+public class SearchFragment extends Fragment implements OnIngredientClickListener, OnSearchItemClickListener, SearchInterface {
 
     SearchPresenterInterface searchPresenterInterface;
     RecyclerView rv_ingredients;
@@ -34,6 +37,8 @@ public class SearchFragment extends Fragment implements OnSearchItemClickListene
     List<Meal> ingredientsList;
     List<Meal> categoriesList;
     List<Meal> areasList;
+
+    TextView btn_showAll;
 
     String TAG = "SEARCH_FRAGMENT";
 
@@ -85,6 +90,15 @@ public class SearchFragment extends Fragment implements OnSearchItemClickListene
         searchPresenterInterface.getAreas();
 
 
+        btn_showAll = view.findViewById(R.id.tv_ingredient_all);
+
+        btn_showAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onViewAllIngredientsClick();
+            }
+        });
+
     }
 
     @Override
@@ -98,6 +112,10 @@ public class SearchFragment extends Fragment implements OnSearchItemClickListene
 
     }
 
+    public void onViewAllIngredientsClick() {
+        Navigation.findNavController(getView()).navigate(SearchFragmentDirections.actionNavigationSearchToIngredientsFragment());
+    }
+
     @Override
     public void showCategories(List<Meal> meal) {
         categoriesAdapter.updateList(meal);
@@ -106,7 +124,7 @@ public class SearchFragment extends Fragment implements OnSearchItemClickListene
 
     @Override
     public void showAreas(List<Meal> meal) {
-        Log.i(TAG,meal.get(0).getArea());
+        Log.i(TAG, meal.get(0).getArea());
         areaAdapter.updateList(meal);
         areaAdapter.notifyDataSetChanged();
     }

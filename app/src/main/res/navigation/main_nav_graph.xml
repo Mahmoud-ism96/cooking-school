@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/ingredientsFragment"
-        android:name="com.example.mycook.main.view.fragments.ingredients.IngredientsFragment"
+        android:name="com.example.mycook.main.view.fragments.ingredients.view.IngredientsFragment"
         android:label="fragment_ingredients"
         tools:layout="@layout/fragment_ingredients" />
     <fragment

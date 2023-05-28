@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mycook.R;
+import com.example.mycook.main.view.fragments.ingredients.view.OnIngredientClickListener;
 import com.example.mycook.model.Meal;
 
 import java.util.List;
@@ -24,9 +25,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     private static final String TAG = "SearchAdapter";
     private Context context;
     private List<Meal> meals;
-    private OnSearchItemClickListener listener;
+    private OnIngredientClickListener listener;
 
-    public IngredientAdapter(Context context, List<Meal> meals, OnSearchItemClickListener listener) {
+    public IngredientAdapter(Context context, List<Meal> meals, OnIngredientClickListener listener) {
         this.context = context;
         this.meals = meals;
         this.listener = listener;
@@ -65,6 +66,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
                 .apply(new RequestOptions().override(200, 200))
                 .placeholder(R.drawable.loading_thumbnail)
                 .error(R.drawable.error_thumbnail).into(holder.iv_Thumbnail);
+
+        holder.iv_Thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
