@@ -69,6 +69,23 @@ public class MealsAPI implements RemoteSource {
         });
     }
 
+    public static void mealsByNameEnqueue(NetworkDelegate networkDelegate, String mealName) {
+        Call<Meals> call = apiService.getMealByName(mealName);
+        call.enqueue(new Callback<Meals>() {
+            @Override
+            public void onResponse(Call<Meals> call, Response<Meals> response) {
+                if (response.isSuccessful()) {
+                    networkDelegate.onSuccessResult(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Meals> call, Throwable t) {
+                networkDelegate.onFailureResult(t.getMessage());
+            }
+        });
+    }
+
     public static void mealsByIngredientEnqueue(NetworkDelegate networkDelegate, String ingredient) {
         Call<Meals> call = apiService.getMealsByIngredient(ingredient);
         call.enqueue(new Callback<Meals>() {
@@ -179,6 +196,11 @@ public class MealsAPI implements RemoteSource {
     @Override
     public void mealByIdEnqueueCall(NetworkDelegate networkDelegate, int id) {
         mealsByIdEnqueue(networkDelegate, id);
+    }
+
+    @Override
+    public void mealByNameEnqueueCall(NetworkDelegate networkDelegate, String mealName) {
+        mealsByNameEnqueue(networkDelegate, mealName);
     }
 
     @Override

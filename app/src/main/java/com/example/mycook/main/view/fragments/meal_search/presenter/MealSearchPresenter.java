@@ -1,8 +1,8 @@
-package com.example.mycook.main.view.fragments.home.presenter;
+package com.example.mycook.main.view.fragments.meal_search.presenter;
 
 import android.util.Log;
 
-import com.example.mycook.main.view.fragments.home.view.HomeInterface;
+import com.example.mycook.main.view.fragments.meal_search.view.MealSearchInterface;
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Meals;
 import com.example.mycook.model.RepositoryInterface;
@@ -10,21 +10,21 @@ import com.example.mycook.network.NetworkDelegate;
 
 import java.util.List;
 
-public class HomePresenter implements HomePresenterInterface, NetworkDelegate {
+public class MealSearchPresenter implements MealSearchPresenterInterface, NetworkDelegate {
 
-    private HomeInterface view;
+    private MealSearchInterface view;
     private RepositoryInterface repo;
 
-    private String TAG = "Home_Presenter";
+    private String TAG = "Search_Presenter";
 
-    public HomePresenter(HomeInterface view, RepositoryInterface repo) {
+    public MealSearchPresenter(MealSearchInterface view, RepositoryInterface repo) {
         this.view = view;
         this.repo = repo;
     }
 
     @Override
-    public void getDailyInspiration() {
-        repo.getDailyInspiration(this);
+    public void getMeals(String mealName) {
+        repo.getMealByName(this, mealName);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class HomePresenter implements HomePresenterInterface, NetworkDelegate {
     @Override
     public void onSuccessResult(Meals meals) {
         List<Meal> items = meals.getMeals();
-        view.showDailyInspiration(items);
+        view.showSearchMeals(items);
     }
 
     @Override

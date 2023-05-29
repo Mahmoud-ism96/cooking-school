@@ -42,6 +42,11 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
+    public void getMealByName(NetworkDelegate networkDelegate, String mealName) {
+        remoteSource.mealByNameEnqueueCall(networkDelegate, mealName);
+    }
+
+    @Override
     public void getMealsByArea(NetworkDelegate networkDelegate, String area) {
         remoteSource.mealsByAreaEnqueueCall(networkDelegate, area);
     }
@@ -84,5 +89,10 @@ public class Repository implements RepositoryInterface {
     @Override
     public void deleteMeal(Meal meal) {
         localSource.deleteMeal(meal);
+    }
+
+    @Override
+    public boolean hasMeal(int id) {
+        return localSource.hasMeal(id);
     }
 }

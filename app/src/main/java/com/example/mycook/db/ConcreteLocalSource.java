@@ -7,6 +7,9 @@ import androidx.lifecycle.LiveData;
 import com.example.mycook.model.Meal;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 public class ConcreteLocalSource implements LocalSource {
 
@@ -51,4 +54,23 @@ public class ConcreteLocalSource implements LocalSource {
     public LiveData<List<Meal>> getAllStoredMeals() {
         return storedMeals;
     }
+
+    @Override
+    public boolean hasMeal(int id) {
+        Callable<Boolean> callable = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return dao.hasMeal(id);
+            }
+        };
+        FutureTask<Boolean> task = new FutureTask<>(callable);
+        new Thread(task).start();
+        try {
+            return task.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

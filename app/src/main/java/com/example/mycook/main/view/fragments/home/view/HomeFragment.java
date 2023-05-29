@@ -1,6 +1,6 @@
 package com.example.mycook.main.view.fragments.home.view;
 
-import static com.example.mycook.ResultType.LOCAL_RESULT;
+import static com.example.mycook.util.ResultType.LOCAL_RESULT;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
@@ -51,6 +53,10 @@ public class HomeFragment extends Fragment implements OnDailyMealClickListener, 
 
         recyclerView = view.findViewById(R.id.rv_daily_list);
         recyclerView.setHasFixedSize(true);
+        LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
+        ingredientsLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(ingredientsLayoutManager);
+
         dailyInspirationAdapter = new DailyInspirationAdapter(getActivity(), dailyMeals, this);
         recyclerView.setAdapter(dailyInspirationAdapter);
         recyclerView.setIntervalRatio(0.7f);
@@ -83,6 +89,11 @@ public class HomeFragment extends Fragment implements OnDailyMealClickListener, 
     @Override
     public void addMeal(Meal meal) {
         homePresenterInterface.addToFav(meal);
+    }
+
+    @Override
+    public boolean mealExist(int mealID) {
+        return homePresenterInterface.mealExist(mealID);
     }
 
 }

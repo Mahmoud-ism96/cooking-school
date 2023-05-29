@@ -13,4 +13,6 @@ public interface LocalSource {
     public void deleteMeal(Meal item);
 
     public LiveData<List<Meal>> getAllStoredMeals();
+
+    public boolean hasMeal(int id);
 }

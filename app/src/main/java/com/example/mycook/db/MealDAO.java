@@ -20,4 +20,7 @@ public interface MealDAO {
 
     @Delete
     void deleteMeal(Meal item);
+
+    @Query("SELECT EXISTS(SELECT * FROM meals WHERE mealID = :id)")
+    boolean hasMeal(int id);
 }

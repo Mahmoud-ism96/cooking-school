@@ -5,6 +5,8 @@ public interface RemoteSource {
 
     void mealByIdEnqueueCall(NetworkDelegate networkDelegate, int id);
 
+    void mealByNameEnqueueCall(NetworkDelegate networkDelegate, String mealName);
+
     void mealsByAreaEnqueueCall(NetworkDelegate networkDelegate, String area);
 
     void mealsByIngredientEnqueueCall(NetworkDelegate networkDelegate, String ingredient);

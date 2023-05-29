@@ -1,6 +1,6 @@
 package com.example.mycook.main.view.fragments.result.view;
 
-import static com.example.mycook.ResultType.REMOTE_RESULT;
+import static com.example.mycook.util.ResultType.REMOTE_RESULT;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycook.R;
-import com.example.mycook.SearchType;
 import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.view.fragments.result.presenter.SearchResultPresenter;
 import com.example.mycook.main.view.fragments.result.presenter.SearchResultPresenterInterface;
@@ -23,6 +22,7 @@ import com.example.mycook.main.view.fragments.result.view.SearchResultFragmentDi
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
+import com.example.mycook.util.SearchType;
 
 import java.util.ArrayList;
 import java.util.List;

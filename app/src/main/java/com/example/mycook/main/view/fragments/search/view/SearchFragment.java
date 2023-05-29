@@ -1,8 +1,8 @@
 package com.example.mycook.main.view.fragments.search.view;
 
-import static com.example.mycook.SearchType.SEARCH_BY_AREA;
-import static com.example.mycook.SearchType.SEARCH_BY_CATEGORY;
-import static com.example.mycook.SearchType.SEARCH_BY_INGREDIENT;
+import static com.example.mycook.util.SearchType.SEARCH_BY_AREA;
+import static com.example.mycook.util.SearchType.SEARCH_BY_CATEGORY;
+import static com.example.mycook.util.SearchType.SEARCH_BY_INGREDIENT;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +27,8 @@ import com.example.mycook.main.view.fragments.search.view.SearchFragmentDirectio
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
@@ -46,6 +48,9 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
     TextView btn_showAll;
 
     String TAG = "SEARCH_FRAGMENT";
+
+    TextInputLayout textInputLayout;
+    TextInputEditText textInputEditText;
 
 
     public SearchFragment() {
@@ -100,6 +105,14 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
             @Override
             public void onClick(View view) {
                 onViewAllIngredientsClick();
+            }
+        });
+
+        textInputEditText = view.findViewById(R.id.et_search);
+        textInputEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(SearchFragmentDirections.actionNavigationSearchToMealSearchFragment());
             }
         });
 

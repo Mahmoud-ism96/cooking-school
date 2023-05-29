@@ -26,6 +26,8 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
     private List<Meal> meals;
     private OnDailyMealClickListener listener;
 
+    private boolean isAddedToFav = false;
+
     public DailyInspirationAdapter(Context context, List<Meal> meals, OnDailyMealClickListener listener) {
         this.context = context;
         this.meals = meals;
@@ -64,6 +66,7 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         holder.tv_Title.setText(meals.get(position).getName());
         holder.tv_Area.setText(meals.get(position).getArea());
         holder.tv_Category.setText(meals.get(position).getCategory());
@@ -71,6 +74,9 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
                 .apply(new RequestOptions().override(1000, 1000))
                 .placeholder(R.drawable.loading_thumbnail)
                 .error(R.drawable.error_thumbnail).into(holder.iv_Thumbnail);
+
+        mealExist(holder, position);
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +84,24 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
             }
         });
 
+        holder.btn_addToFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onFavClick(meals.get(position));
+                if (isAddedToFav)
+                    isAddedToFav = false;
+                else
+                    isAddedToFav = true;
+                setFavIcon(holder);
+            }
+        });
+
+
+    }
+
+    private void mealExist(@NonNull ViewHolder holder, int position) {
+        isAddedToFav = listener.mealExist(meals.get(position).getMealID());
+        setFavIcon(holder);
     }
 
     @Override
@@ -86,6 +110,14 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
         if (meals != null)
             size = meals.size();
         return size;
+    }
+
+    public void setFavIcon(ViewHolder holder) {
+        if (isAddedToFav)
+            holder.btn_addToFav.setImageResource(R.drawable.turned_in_white_24dp);
+        else
+            holder.btn_addToFav.setImageResource(R.drawable.turned_in_not_white_24dp);
+
     }
 
     public void updateList(List<Meal> list) {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,7 +34,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
    public class ViewHolder extends RecyclerView.ViewHolder {
       public TextView tv_Title;
       public ImageView iv_Thumbnail;
-      public ImageButton btn_addToFav;
       public CardView cardView;
       public View layout;
 
@@ -45,7 +43,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
          cardView = itemView.findViewById(R.id.search_result_card_view);
          tv_Title = itemView.findViewById(R.id.search_result_title);
          iv_Thumbnail = itemView.findViewById(R.id.search_result_thumbnail);
-         btn_addToFav = itemView.findViewById(R.id.btn_search_result_fav);
       }
    }
 

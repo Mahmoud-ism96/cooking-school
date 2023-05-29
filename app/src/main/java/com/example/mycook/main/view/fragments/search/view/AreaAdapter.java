@@ -92,6 +92,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
         flagUrls.add("https://www.worldometers.info/img/flags/hr-flag.gif");
         flagUrls.add("https://www.worldometers.info/img/flags/nl-flag.gif");
         flagUrls.add("https://www.worldometers.info/img/flags/eg-flag.gif");
+        flagUrls.add("https://www.worldometers.info/img/flags/rp-flag.gif");
         flagUrls.add("https://www.worldometers.info/img/flags/fr-flag.gif");
         flagUrls.add("https://www.worldometers.info/img/flags/gr-flag.gif");
         flagUrls.add("https://www.worldometers.info/img/flags/in-flag.gif");

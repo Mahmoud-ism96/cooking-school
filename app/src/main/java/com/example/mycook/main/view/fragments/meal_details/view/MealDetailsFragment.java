@@ -1,6 +1,6 @@
 package com.example.mycook.main.view.fragments.meal_details.view;
 
-import static com.example.mycook.ResultType.LOCAL_RESULT;
+import static com.example.mycook.util.ResultType.LOCAL_RESULT;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mycook.R;
-import com.example.mycook.ResultType;
 import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.view.fragments.meal_details.presenter.MealDetailsPresenter;
 import com.example.mycook.main.view.fragments.meal_details.presenter.MealDetailsPresenterInterface;
@@ -26,6 +25,7 @@ import com.example.mycook.model.Ingredient;
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
+import com.example.mycook.util.ResultType;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -128,11 +128,13 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
 
     public void setIngredients() {
         for (int i = 1; i <= 20; i++) {
-            String ingredient = "";
-            String measurement = "";
+            String ingredient = null;
+            String measurement = null;
             try {
                 ingredient = (String) meal.getClass().getMethod("getIngredient" + i).invoke(meal);
                 measurement = (String) meal.getClass().getMethod("getMeasurement" + i).invoke(meal);
+                if (ingredient == null)
+                    ingredient = "";
 
                 if (!ingredient.equals("")) {
                     ingredientsList.add(new Ingredient(ingredient, measurement));

@@ -14,6 +14,9 @@ public interface ApiInterface {
     @GET("lookup.php")
     Call<Meals> getMealById(@Query("i") int id);
 
+    @GET("search.php")
+    Call<Meals> getMealByName(@Query("s") String mealName);
+
     @GET("filter.php")
     Call<Meals> getMealsByIngredient(@Query("i") String ingredient);
 

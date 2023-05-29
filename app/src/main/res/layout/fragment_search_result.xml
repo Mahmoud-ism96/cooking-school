@@ -19,6 +19,7 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="Search Result"
         android:textSize="24sp"
         android:textStyle="bold"

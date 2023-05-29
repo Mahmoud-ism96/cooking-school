@@ -11,6 +11,8 @@ public interface RepositoryInterface {
 
     public void getMealById(NetworkDelegate networkDelegate, int id);
 
+    public void getMealByName(NetworkDelegate networkDelegate, String mealName);
+
     public void getMealsByIngredient(NetworkDelegate networkDelegate, String ingredient);
 
     public void getMealsByCategory(NetworkDelegate networkDelegate, String category);
@@ -28,4 +30,6 @@ public interface RepositoryInterface {
     public LiveData<List<Meal>> getStoredMeals();
 
     public void deleteMeal(Meal meal);
+
+    public boolean hasMeal(int id);
 }

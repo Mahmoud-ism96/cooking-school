@@ -34,10 +34,13 @@
         <action
             android:id="@+id/action_navigation_search_to_searchResultFragment"
             app:destination="@id/searchResultFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_mealSearchFragment"
+            app:destination="@id/mealSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_favourites"
-        android:name="com.example.mycook.main.view.fragments.favourites.FavouritesFragment"
+        android:name="com.example.mycook.main.view.fragments.favourites.view.FavouritesFragment"
         android:label="fragment_favourites"
         tools:layout="@layout/fragment_favourites" >
         <action
@@ -68,7 +71,7 @@
             app:argType="com.example.mycook.model.Meal" />
         <argument
             android:name="ResultType"
-            app:argType="com.example.mycook.ResultType" />
+            app:argType="com.example.mycook.util.ResultType" />
     </fragment>
     <fragment
         android:id="@+id/searchResultFragment"
@@ -80,9 +83,18 @@
             app:argType="string" />
         <argument
             android:name="SearchType"
-            app:argType="com.example.mycook.SearchType" />
+            app:argType="com.example.mycook.util.SearchType" />
         <action
             android:id="@+id/action_searchResultFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealSearchFragment"
+        android:name="com.example.mycook.main.view.fragments.meal_search.view.MealSearchFragment"
+        android:label="fragment_meal_search"
+        tools:layout="@layout/fragment_meal_search" >
+        <action
+            android:id="@+id/action_mealSearchFragment_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment" />
     </fragment>
 </navigation>
