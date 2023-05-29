@@ -1,5 +1,7 @@
 package com.example.mycook.main.view.fragments.ingredients.view;
 
+import static com.example.mycook.util.SearchType.SEARCH_BY_INGREDIENT;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +18,7 @@ import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.view.fragments.ingredients.presenter.IngredientsPresenter;
 import com.example.mycook.main.view.fragments.ingredients.presenter.IngredientsPresenterInterface;
+import com.example.mycook.main.view.fragments.ingredients.view.IngredientsFragmentDirections.ActionIngredientsFragmentToSearchResultFragment;
 import com.example.mycook.main.view.fragments.search.view.IngredientAdapter;
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
@@ -64,6 +68,7 @@ public class IngredientsFragment extends Fragment implements OnIngredientClickLi
 
     @Override
     public void onIngredientClick(String ingredient) {
-
+        ActionIngredientsFragmentToSearchResultFragment navigationAction = IngredientsFragmentDirections.actionIngredientsFragmentToSearchResultFragment(ingredient,SEARCH_BY_INGREDIENT);
+        Navigation.findNavController(getView()).navigate(navigationAction);
     }
 }

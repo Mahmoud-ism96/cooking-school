@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,10 +35,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealDetailsFragment extends Fragment implements MealDetailsInterface, OnFavClickListener {
+public class MealDetailsFragment extends Fragment implements MealDetailsInterface, OnMealDetailsClickListener {
 
     String TAG = "MealDetailsFragment";
     private ImageView iv_thumbnail;
+    private ImageButton btn_fav;
     private TextView tv_title;
     private TextView tv_category;
     private TextView tv_area;
@@ -46,9 +48,9 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
     Meal meal;
     ResultType resultType;
     RecyclerView rv_ingredients;
-    MealIngredientsAdapter mealIngredientsAdapter;
+    MealDetailsIngredientsAdapter mealIngredientsAdapter;
     List<Ingredient> ingredientsList;
-
+    private boolean isAddedToFav = false;
     MealDetailsPresenterInterface mealDetailsPresenterInterface;
 
 
@@ -70,12 +72,11 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
         resultType = MealDetailsFragmentArgs.fromBundle(getArguments()).getResultType();
 
         initViews(view);
+        mealDetailsPresenterInterface = new MealDetailsPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
 
         ingredientsList = new ArrayList<>();
-        if (resultType == LOCAL_RESULT)
-            setupMeal();
+        if (resultType == LOCAL_RESULT) setupMeal();
         else {
-            mealDetailsPresenterInterface = new MealDetailsPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
             mealDetailsPresenterInterface.getMealById(meal.getMealID());
         }
 
@@ -89,6 +90,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
         tv_description = view.findViewById(R.id.tv_meal_description);
         yt_player = view.findViewById(R.id.vw_youtube);
         rv_ingredients = view.findViewById(R.id.rv_meal_ingredients);
+        btn_fav = view.findViewById(R.id.btn_meal_details_fav);
     }
 
     private void setupMeal() {
@@ -100,6 +102,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
         setIngredients();
 
         initRecyclerView();
+
+        mealExist();
     }
 
     private void assignMealToViews() {
@@ -108,6 +112,17 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
         tv_category.setText(meal.getCategory());
         tv_area.setText(meal.getArea());
         tv_description.setText(meal.getInstructions());
+        btn_fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mealDetailsPresenterInterface.addToFav(meal);
+                if (isAddedToFav)
+                    isAddedToFav = false;
+                else
+                    isAddedToFav = true;
+                setFavIcon();
+            }
+        });
     }
 
     private void initYoutubePlayer() {
@@ -133,8 +148,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
             try {
                 ingredient = (String) meal.getClass().getMethod("getIngredient" + i).invoke(meal);
                 measurement = (String) meal.getClass().getMethod("getMeasurement" + i).invoke(meal);
-                if (ingredient == null)
-                    ingredient = "";
+                if (ingredient == null) ingredient = "";
 
                 if (!ingredient.equals("")) {
                     ingredientsList.add(new Ingredient(ingredient, measurement));
@@ -175,8 +189,21 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
     }
 
     private void initAdapter() {
-        mealIngredientsAdapter = new MealIngredientsAdapter(getActivity(), ingredientsList);
+        mealIngredientsAdapter = new MealDetailsIngredientsAdapter(getActivity(), ingredientsList);
         rv_ingredients.setAdapter(mealIngredientsAdapter);
+    }
+
+    private void mealExist() {
+        isAddedToFav = mealDetailsPresenterInterface.mealExist(meal.getMealID());
+        setFavIcon();
+    }
+
+    public void setFavIcon() {
+        if (isAddedToFav)
+            btn_fav.setImageResource(R.drawable.turned_in_white_24dp);
+        else
+            btn_fav.setImageResource(R.drawable.turned_in_not_white_24dp);
+
     }
 
     @Override
@@ -187,6 +214,16 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
 
     @Override
     public void addMeal(Meal meal) {
+        mealDetailsPresenterInterface.addToFav(meal);
+    }
 
+    @Override
+    public void onFavClick(Meal meal) {
+        addMeal(meal);
+    }
+
+    @Override
+    public boolean mealExist(int mealID) {
+        return mealDetailsPresenterInterface.mealExist(mealID);
     }
 }

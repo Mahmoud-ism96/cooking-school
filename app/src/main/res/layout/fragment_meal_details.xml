@@ -138,6 +138,18 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline20"
                 app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
+            <ImageButton
+                android:id="@+id/btn_meal_details_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_ripple"
+                android:padding="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline21"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/turned_in_not_white_24dp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -147,7 +159,9 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline21"
                 app:layout_constraintStart_toStartOf="@+id/guideline20"
                 app:layout_constraintTop_toBottomOf="@+id/textView16"
-                tools:listitem="@layout/ingredients_item" />
+                tools:listitem="@layout/ingredients_item" >
+
+            </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/textView8"

@@ -28,8 +28,17 @@ public class MealDetailsPresenter implements MealDetailsPresenterInterface, Netw
     }
 
     @Override
+    public boolean mealExist(int mealId) {
+        return repo.hasMeal(mealId);
+    }
+
+    @Override
     public void addToFav(Meal meal) {
-        repo.insertMeal(meal);
+        if (mealExist(meal.getMealID())) {
+            repo.deleteMeal(meal);
+        } else {
+            repo.insertMeal(meal);
+        }
     }
 
     @Override

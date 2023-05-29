@@ -18,13 +18,13 @@ import com.example.mycook.model.Ingredient;
 
 import java.util.List;
 
-public class MealIngredientsAdapter extends RecyclerView.Adapter<MealIngredientsAdapter.ViewHolder> {
+public class MealDetailsIngredientsAdapter extends RecyclerView.Adapter<MealDetailsIngredientsAdapter.ViewHolder> {
 
     private static final String TAG = "MealIngredientsAdapter";
     private Context context;
     private List<Ingredient> ingredients;
 
-    public MealIngredientsAdapter(Context context, List<Ingredient> ingredients) {
+    public MealDetailsIngredientsAdapter(Context context, List<Ingredient> ingredients) {
         this.context = context;
         this.ingredients = ingredients;
     }
