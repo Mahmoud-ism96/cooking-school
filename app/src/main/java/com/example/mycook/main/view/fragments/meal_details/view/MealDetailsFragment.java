@@ -30,7 +30,9 @@ import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
 import com.example.mycook.util.ResultType;
+import com.example.mycook.util.SignUpDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -77,7 +79,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
         resultType = MealDetailsFragmentArgs.fromBundle(getArguments()).getResultType();
 
         initViews(view);
-        mealDetailsPresenterInterface = new MealDetailsPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
+        mealDetailsPresenterInterface = new MealDetailsPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
 
         ingredientsList = new ArrayList<>();
         if (resultType == LOCAL_RESULT) setupMeal();
@@ -121,19 +123,26 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
         btn_fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mealDetailsPresenterInterface.addToFav(meal);
-                if (isAddedToFav) isAddedToFav = false;
-                else isAddedToFav = true;
-                setFavIcon();
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    updateFavMeals();
+                } else SignUpDialog.showSignupDialog(getActivity());
             }
         });
 
         btn_addToPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPlanDialog(view);
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) showPlanDialog(view);
+                else SignUpDialog.showSignupDialog(getActivity());
             }
         });
+    }
+
+    private void updateFavMeals() {
+        mealDetailsPresenterInterface.addToFav(meal);
+        if (isAddedToFav) isAddedToFav = false;
+        else isAddedToFav = true;
+        setFavIcon();
     }
 
     private void showPlanDialog(View view) {
@@ -170,7 +179,6 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
                     mealDetailsPresenterInterface.addToPlan(meal, strName);
                 }
                 setFavIcon();
-
             }
         });
         builder.show();
@@ -272,7 +280,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
     }
 
     @Override
-    public boolean mealExist(int mealID) {
+    public boolean mealExist(String mealID) {
         return mealDetailsPresenterInterface.mealExist(mealID);
     }
 }

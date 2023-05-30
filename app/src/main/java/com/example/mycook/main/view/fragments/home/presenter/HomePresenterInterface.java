@@ -5,7 +5,8 @@ import com.example.mycook.model.Meal;
 public interface HomePresenterInterface {
     public void getDailyInspiration();
 
-    public boolean mealExist(int mealId);
+    public boolean mealExist(String mealId);
 
     public void addToFav(Meal meal);
+
 }

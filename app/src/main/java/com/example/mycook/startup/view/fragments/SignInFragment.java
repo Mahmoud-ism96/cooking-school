@@ -114,6 +114,9 @@ public class SignInFragment extends Fragment {
         if (user != null) {
             Intent intent = new Intent(getContext(), MainActivity.class);
             startActivity(intent);
+            getActivity().finish();
         }
     }
+
+
 }

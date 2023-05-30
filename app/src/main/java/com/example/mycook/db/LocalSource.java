@@ -20,5 +20,9 @@ public interface LocalSource {
 
     public void deletePlanDay(String meal_id);
 
-    public boolean hasMeal(int id);
+    public boolean hasMeal(String id);
+
+    public void deleteAllMeals();
+
+    public void insertAllMeal(List<Meal> meal);
 }

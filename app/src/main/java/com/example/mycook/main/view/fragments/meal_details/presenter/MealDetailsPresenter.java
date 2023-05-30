@@ -23,12 +23,12 @@ public class MealDetailsPresenter implements MealDetailsPresenterInterface, Netw
     }
 
     @Override
-    public void getMealById(int id) {
+    public void getMealById(String id) {
         repo.getMealById(this, id);
     }
 
     @Override
-    public boolean mealExist(int mealId) {
+    public boolean mealExist(String mealId) {
         return repo.hasMeal(mealId);
     }
 
@@ -43,7 +43,7 @@ public class MealDetailsPresenter implements MealDetailsPresenterInterface, Netw
 
     @Override
     public void addToPlan(Meal meal, String day) {
-        repo.updateMealPlanDay(Integer.toString(meal.getMealID()), day);
+        repo.updateMealPlanDay((meal.getMealID()), day);
     }
 
     @Override

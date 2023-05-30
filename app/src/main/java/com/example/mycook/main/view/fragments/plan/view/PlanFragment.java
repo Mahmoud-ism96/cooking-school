@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -24,6 +26,7 @@ import com.example.mycook.main.view.fragments.plan.view.PlanFragmentDirections.A
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +38,10 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     PlanDaysAdapter planDaysAdapter;
     PlanMealsAdapter planMealsAdapter;
     PlanPresenterInterface planPresenterInterface;
-
     ArrayList<String> weekDays;
     ArrayList<Meal> meals;
+    TextView tv_plan_signup;
+    Group plan_group;
 
 
     public PlanFragment() {
@@ -55,27 +59,35 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initWeekDays();
-        planPresenterInterface = new PlanPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
+        tv_plan_signup = view.findViewById(R.id.tv_plan_signup);
+        plan_group = view.findViewById(R.id.plan_group);
 
-        rv_day_list = view.findViewById(R.id.rv_week_days_list);
-        rv_day_list.setHasFixedSize(true);
-        LinearLayoutManager dayLayoutManager = new LinearLayoutManager(getContext());
-        dayLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        rv_day_list.setLayoutManager(dayLayoutManager);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            initWeekDays();
+            planPresenterInterface = new PlanPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
 
-        planDaysAdapter = new PlanDaysAdapter(rv_day_list, getActivity(), weekDays, this);
-        rv_day_list.setAdapter(planDaysAdapter);
+            rv_day_list = view.findViewById(R.id.rv_week_days_list);
+            rv_day_list.setHasFixedSize(true);
+            LinearLayoutManager dayLayoutManager = new LinearLayoutManager(getContext());
+            dayLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+            rv_day_list.setLayoutManager(dayLayoutManager);
+
+            planDaysAdapter = new PlanDaysAdapter(rv_day_list, getActivity(), weekDays, this);
+            rv_day_list.setAdapter(planDaysAdapter);
 
 
-        rv_meal_list = view.findViewById(R.id.rv_plan_meal_list);
-        rv_meal_list.setHasFixedSize(true);
-        LinearLayoutManager mealLayoutManager = new LinearLayoutManager(getContext());
-        mealLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        rv_meal_list.setLayoutManager(mealLayoutManager);
+            rv_meal_list = view.findViewById(R.id.rv_plan_meal_list);
+            rv_meal_list.setHasFixedSize(true);
+            LinearLayoutManager mealLayoutManager = new LinearLayoutManager(getContext());
+            mealLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            rv_meal_list.setLayoutManager(mealLayoutManager);
 
-        planMealsAdapter = new PlanMealsAdapter(getActivity(), meals, this);
-        rv_meal_list.setAdapter(planMealsAdapter);
+            planMealsAdapter = new PlanMealsAdapter(getActivity(), meals, this);
+            rv_meal_list.setAdapter(planMealsAdapter);
+        } else {
+            tv_plan_signup.setVisibility(View.VISIBLE);
+            plan_group.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void initWeekDays() {

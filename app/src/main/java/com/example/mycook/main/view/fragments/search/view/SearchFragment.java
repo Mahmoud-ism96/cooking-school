@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.view.fragments.ingredients.view.OnIngredientClickListener;
@@ -44,8 +46,9 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
     List<Meal> ingredientsList;
     List<Meal> categoriesList;
     List<Meal> areasList;
-
     TextView btn_showAll;
+    Group search_group;
+    LottieAnimationView loading;
 
     String TAG = "SEARCH_FRAGMENT";
 
@@ -67,6 +70,8 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupLoading(view);
+
         rv_ingredients = view.findViewById(R.id.rv_ingredient_list);
         rv_ingredients.setHasFixedSize(true);
         LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
@@ -75,7 +80,7 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
 
         ingredientAdapter = new IngredientAdapter(getActivity(), ingredientsList, this);
         rv_ingredients.setAdapter(ingredientAdapter);
-        searchPresenterInterface = new SearchPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
+        searchPresenterInterface = new SearchPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
         searchPresenterInterface.getIngredients();
 
         rv_categories = view.findViewById(R.id.rv_category_list);
@@ -122,6 +127,7 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
     public void showIngredients(List<Meal> meal) {
         ingredientAdapter.updateList(meal);
         ingredientAdapter.notifyDataSetChanged();
+        updateVisibility(View.VISIBLE, View.INVISIBLE);
     }
 
     @Override
@@ -157,5 +163,17 @@ public class SearchFragment extends Fragment implements OnIngredientClickListene
     public void onAreaClick(String area) {
         ActionNavigationSearchToSearchResultFragment action = SearchFragmentDirections.actionNavigationSearchToSearchResultFragment(area, SEARCH_BY_AREA);
         Navigation.findNavController(getView()).navigate(action);
+    }
+
+    private void setupLoading(@NonNull View view) {
+        search_group = view.findViewById(R.id.search_group);
+        loading = view.findViewById(R.id.search_loading);
+
+        updateVisibility(View.INVISIBLE, View.VISIBLE);
+    }
+
+    private void updateVisibility(int visible, int invisible) {
+        search_group.setVisibility(visible);
+        loading.setVisibility(invisible);
     }
 }

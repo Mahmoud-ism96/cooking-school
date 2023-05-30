@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.mycook.model.Meal;
@@ -22,7 +23,7 @@ public interface MealDAO {
     void deleteMeal(Meal item);
 
     @Query("SELECT EXISTS(SELECT * FROM meals WHERE mealID = :id)")
-    boolean hasMeal(int id);
+    boolean hasMeal(String id);
 
     @Query("SELECT * From meals WHERE weekday = :day")
     LiveData<List<Meal>> getMealByPlanDay(String day);
@@ -32,4 +33,10 @@ public interface MealDAO {
 
     @Query("UPDATE meals set weekday = null WHERE mealID = :meal_id")
     void deletePlanDay(String meal_id);
+
+    @Query("DELETE FROM meals")
+    void deleteAllMeals();
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertAllMeal (List<Meal> meal);
 }

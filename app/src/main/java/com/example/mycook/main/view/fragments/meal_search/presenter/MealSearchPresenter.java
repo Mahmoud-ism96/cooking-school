@@ -28,7 +28,7 @@ public class MealSearchPresenter implements MealSearchPresenterInterface, Networ
     }
 
     @Override
-    public boolean mealExist(int mealId) {
+    public boolean mealExist(String mealId) {
         return repo.hasMeal(mealId);
     }
 

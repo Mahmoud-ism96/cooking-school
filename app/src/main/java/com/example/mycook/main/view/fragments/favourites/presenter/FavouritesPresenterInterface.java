@@ -8,5 +8,5 @@ public interface FavouritesPresenterInterface {
 
     public void removeFromFav(Meal meal);
 
-    public boolean mealExist(int mealId);
+    public boolean mealExist(String mealId);
 }

@@ -24,7 +24,7 @@ public class PlanPresenter implements PlanPresenterInterface {
 
     @Override
     public void removeFromWeek(Meal meal) {
-        String mealId = Integer.toString(meal.getMealID());
+        String mealId = meal.getMealID();
         String noWeekDay = "";
         repo.updateMealPlanDay(mealId, noWeekDay);
     }

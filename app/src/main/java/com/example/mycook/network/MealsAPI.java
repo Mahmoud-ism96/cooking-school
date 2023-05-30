@@ -1,7 +1,12 @@
 package com.example.mycook.network;
 
+import android.content.Context;
+
 import com.example.mycook.model.Meals;
 
+import java.io.File;
+
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -17,20 +22,26 @@ public class MealsAPI implements RemoteSource {
     private static MealsAPI client = null;
     private static ApiInterface apiService;
 
-    private MealsAPI() {
+    private MealsAPI(Context context) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(loggingInterceptor).build();
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).client(client).addConverterFactory(GsonConverterFactory.create()).build();
+        File cacheDirectory = new File(context.getCacheDir(), "offline_cache_directory");
+        Cache cache = new Cache(cacheDirectory, 80 * 1024 * 1024);
+
+        OkHttpClient okHttpClient = new OkHttpClient
+                .Builder().cache(cache).build();
+        
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).client(client).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
 
         apiService = retrofit.create(ApiInterface.class);
     }
 
-    public static MealsAPI getInstance() {
+    public static MealsAPI getInstance(Context context) {
         if (client == null) {
-            client = new MealsAPI();
+            client = new MealsAPI(context);
         }
         return client;
     }
@@ -52,7 +63,7 @@ public class MealsAPI implements RemoteSource {
         });
     }
 
-    public static void mealsByIdEnqueue(NetworkDelegate networkDelegate, int id) {
+    public static void mealsByIdEnqueue(NetworkDelegate networkDelegate, String id) {
         Call<Meals> call = apiService.getMealById(id);
         call.enqueue(new Callback<Meals>() {
             @Override
@@ -194,7 +205,7 @@ public class MealsAPI implements RemoteSource {
     }
 
     @Override
-    public void mealByIdEnqueueCall(NetworkDelegate networkDelegate, int id) {
+    public void mealByIdEnqueueCall(NetworkDelegate networkDelegate, String id) {
         mealsByIdEnqueue(networkDelegate, id);
     }
 

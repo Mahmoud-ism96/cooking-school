@@ -37,7 +37,7 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public void getMealById(NetworkDelegate networkDelegate, int id) {
+    public void getMealById(NetworkDelegate networkDelegate, String id) {
         remoteSource.mealByIdEnqueueCall(networkDelegate, id);
     }
 
@@ -107,7 +107,17 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public boolean hasMeal(int id) {
+    public boolean hasMeal(String id) {
         return localSource.hasMeal(id);
+    }
+
+    @Override
+    public void deleteAllMeals() {
+        localSource.deleteAllMeals();
+    }
+
+    @Override
+    public void insertAllMeals(List<Meal> meal) {
+        localSource.insertAllMeal(meal);
     }
 }

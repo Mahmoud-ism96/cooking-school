@@ -12,7 +12,7 @@ public interface ApiInterface {
     Call<Meals> getDailyInspiration();
 
     @GET("lookup.php")
-    Call<Meals> getMealById(@Query("i") int id);
+    Call<Meals> getMealById(@Query("i") String id);
 
     @GET("search.php")
     Call<Meals> getMealByName(@Query("s") String mealName);

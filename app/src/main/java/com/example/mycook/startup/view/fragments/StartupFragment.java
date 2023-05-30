@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +35,7 @@ public class StartupFragment extends Fragment {
     Button btn_google;
     Button btn_email;
     TextView tv_signin;
+    TextView tv_skip;
     private static final String TAG = "EmailPassword";
     private FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient;
@@ -64,6 +66,19 @@ public class StartupFragment extends Fragment {
 
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         mAuth = FirebaseAuth.getInstance();
+
+        tv_skip = view.findViewById(R.id.btn_skip);
+
+        tv_skip.setOnClickListener(skip -> {
+            new MaterialAlertDialogBuilder(getContext()).setTitle(R.string.dialog_skip_title).setMessage(R.string.dialog_skip_body)
+                    .setNegativeButton(getResources().getString(R.string.dialog_skip_btn_negative), (dialog, which) -> {
+                    })
+                    .setPositiveButton(getResources().getString(R.string.dialog_skip_btn_positive), (dialog, which) -> {
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }).show();
+        });
 
     }
 
@@ -152,6 +167,7 @@ public class StartupFragment extends Fragment {
         if (user != null) {
             Intent intent = new Intent(getContext(), MainActivity.class);
             startActivity(intent);
+            getActivity().finish();
         }
     }
 }

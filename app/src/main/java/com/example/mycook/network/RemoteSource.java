@@ -3,7 +3,7 @@ package com.example.mycook.network;
 public interface RemoteSource {
     void dailyInspirationEnqueueCall(NetworkDelegate networkDelegate);
 
-    void mealByIdEnqueueCall(NetworkDelegate networkDelegate, int id);
+    void mealByIdEnqueueCall(NetworkDelegate networkDelegate, String id);
 
     void mealByNameEnqueueCall(NetworkDelegate networkDelegate, String mealName);
 

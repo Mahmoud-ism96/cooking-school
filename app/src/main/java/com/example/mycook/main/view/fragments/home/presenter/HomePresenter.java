@@ -28,7 +28,7 @@ public class HomePresenter implements HomePresenterInterface, NetworkDelegate {
     }
 
     @Override
-    public boolean mealExist(int mealId) {
+    public boolean mealExist(String mealId) {
         return repo.hasMeal(mealId);
     }
 

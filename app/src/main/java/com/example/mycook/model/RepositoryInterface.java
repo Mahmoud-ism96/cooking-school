@@ -9,7 +9,7 @@ import java.util.List;
 public interface RepositoryInterface {
     public void getDailyInspiration(NetworkDelegate networkDelegate);
 
-    public void getMealById(NetworkDelegate networkDelegate, int id);
+    public void getMealById(NetworkDelegate networkDelegate, String id);
 
     public void getMealByName(NetworkDelegate networkDelegate, String mealName);
 
@@ -37,5 +37,9 @@ public interface RepositoryInterface {
 
     public void deleteMeal(Meal meal);
 
-    public boolean hasMeal(int id);
+    public boolean hasMeal(String id);
+
+    public void deleteAllMeals();
+
+    public void insertAllMeals(List<Meal> meal);
 }

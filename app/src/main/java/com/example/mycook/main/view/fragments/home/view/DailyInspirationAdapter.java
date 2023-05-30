@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.mycook.R;
 import com.example.mycook.model.Meal;
 import com.google.android.material.carousel.MaskableFrameLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -88,11 +89,13 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
             @Override
             public void onClick(View view) {
                 listener.onFavClick(meals.get(position));
-                if (isAddedToFav)
-                    isAddedToFav = false;
-                else
-                    isAddedToFav = true;
-                setFavIcon(holder);
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    if (isAddedToFav)
+                        isAddedToFav = false;
+                    else
+                        isAddedToFav = true;
+                    setFavIcon(holder);
+                }
             }
         });
 

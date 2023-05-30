@@ -5,5 +5,5 @@ import com.example.mycook.model.Meal;
 interface OnMealDetailsClickListener {
 
  void onFavClick(Meal meal);
- boolean mealExist(int mealID);
+ boolean mealExist(String mealID);
 }

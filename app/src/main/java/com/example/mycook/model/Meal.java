@@ -14,7 +14,7 @@ import com.google.gson.annotations.SerializedName;
 public class Meal implements Parcelable {
 
     protected Meal(Parcel in) {
-        mealID = in.readInt();
+        mealID = in.readString();
         name = in.readString();
         area = in.readString();
         category = in.readString();
@@ -77,6 +77,9 @@ public class Meal implements Parcelable {
         }
     };
 
+    public Meal() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -84,7 +87,7 @@ public class Meal implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int i) {
-        dest.writeInt(mealID);
+        dest.writeString(mealID);
         dest.writeString(name);
         dest.writeString(area);
         dest.writeString(category);
@@ -135,11 +138,11 @@ public class Meal implements Parcelable {
         dest.writeString(weekDay);
     }
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @NonNull
     @SerializedName("idMeal")
     @ColumnInfo(name = "mealID")
-    private int mealID;
+    private String mealID;
 
     @SerializedName("strMeal")
     @ColumnInfo(name = "name")
@@ -332,7 +335,7 @@ public class Meal implements Parcelable {
     private String weekDay;
 
 
-    public Meal(int mealID, String name, String area, String category, String instructions, String thumbnail, String ingredient1, String ingredient2, String ingredient3, String ingredient4, String ingredient5, String ingredient6, String ingredient7, String ingredient8, String ingredient9, String ingredient10, String ingredient11, String ingredient12, String ingredient13, String ingredient14, String ingredient15, String ingredient16, String ingredient17, String ingredient18, String ingredient19, String ingredient20, String measurement1, String measurement2, String measurement3, String measurement4, String measurement5, String measurement6, String measurement7, String measurement8, String measurement9, String measurement10, String measurement11, String measurement12, String measurement13, String measurement14, String measurement15, String measurement16, String measurement17, String measurement18, String measurement19, String measurement20, String youtubeURL) {
+    public Meal(String mealID, String name, String area, String category, String instructions, String thumbnail, String ingredient1, String ingredient2, String ingredient3, String ingredient4, String ingredient5, String ingredient6, String ingredient7, String ingredient8, String ingredient9, String ingredient10, String ingredient11, String ingredient12, String ingredient13, String ingredient14, String ingredient15, String ingredient16, String ingredient17, String ingredient18, String ingredient19, String ingredient20, String measurement1, String measurement2, String measurement3, String measurement4, String measurement5, String measurement6, String measurement7, String measurement8, String measurement9, String measurement10, String measurement11, String measurement12, String measurement13, String measurement14, String measurement15, String measurement16, String measurement17, String measurement18, String measurement19, String measurement20, String youtubeURL) {
         this.mealID = mealID;
         this.name = name;
         this.area = area;
@@ -382,11 +385,11 @@ public class Meal implements Parcelable {
         this.youtubeURL = youtubeURL;
     }
 
-    public int getMealID() {
+    public String getMealID() {
         return mealID;
     }
 
-    public void setMealID(int mealID) {
+    public void setMealID(String mealID) {
         this.mealID = mealID;
     }
 

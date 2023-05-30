@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -25,6 +27,7 @@ import com.example.mycook.main.view.fragments.home.view.OnDailyMealClickListener
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -34,6 +37,8 @@ public class FavouritesFragment extends Fragment implements OnDailyMealClickList
     FavouritesAdapter favouritesAdapter;
     List<Meal> meal;
     FavouritesPresenterInterface favouritesPresenterInterface;
+    TextView tv_favourites_signup;
+    Group favourites_group;
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -49,17 +54,24 @@ public class FavouritesFragment extends Fragment implements OnDailyMealClickList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        tv_favourites_signup = view.findViewById(R.id.tv_favourites_signup);
+        favourites_group = view.findViewById(R.id.favourites_group);
         recyclerView = view.findViewById(R.id.rv_favourite_list);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
-        ingredientsLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(ingredientsLayoutManager);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            recyclerView.setHasFixedSize(true);
+            LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
+            ingredientsLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            recyclerView.setLayoutManager(ingredientsLayoutManager);
 
-        favouritesAdapter = new FavouritesAdapter(getActivity(), meal, this);
-        recyclerView.setAdapter(favouritesAdapter);
+            favouritesAdapter = new FavouritesAdapter(getActivity(), meal, this);
+            recyclerView.setAdapter(favouritesAdapter);
 
-        favouritesPresenterInterface = new FavouritesPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
-        favouritesPresenterInterface.getFavMeals();
+            favouritesPresenterInterface = new FavouritesPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
+            favouritesPresenterInterface.getFavMeals();
+        } else {
+            tv_favourites_signup.setVisibility(View.VISIBLE);
+            favourites_group.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -91,7 +103,7 @@ public class FavouritesFragment extends Fragment implements OnDailyMealClickList
     }
 
     @Override
-    public boolean mealExist(int mealID) {
+    public boolean mealExist(String mealID) {
         return favouritesPresenterInterface.mealExist(mealID);
     }
 }

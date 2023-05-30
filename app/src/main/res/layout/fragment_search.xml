@@ -6,6 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".main.view.fragments.search.view.SearchFragment">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/search_loading"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/search_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="guideline13,textView11,textView7,rv_ingredient_list,textView10,tv_ingredient_all,rv_category_list,guideline15,search_textfield,rv_area_list,guideline14"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline13"
@@ -94,8 +117,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/text_ripple"
-        android:text="View All"
         android:clickable="true"
+        android:text="View All"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView7"
         app:layout_constraintEnd_toStartOf="@+id/guideline15"
@@ -123,8 +146,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline14"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
-        tools:listitem="@layout/search_item" >
-    </androidx.recyclerview.widget.RecyclerView>
+        tools:listitem="@layout/search_item"></androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/textView11"
@@ -148,6 +170,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline14"
         app:layout_constraintTop_toBottomOf="@+id/textView11"
-        tools:listitem="@layout/search_item"></androidx.recyclerview.widget.RecyclerView>
+        tools:listitem="@layout/search_item" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

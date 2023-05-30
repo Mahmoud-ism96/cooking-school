@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.view.fragments.result.presenter.SearchResultPresenter;
@@ -33,6 +35,8 @@ public class SearchResultFragment extends Fragment implements SearchResultsInter
     RecyclerView recyclerView;
     SearchResultAdapter resultAdapter;
     List<Meal> searchResult;
+    Group result_group;
+    LottieAnimationView loading;
 
     String TAG = "SearchResultFragment";
 
@@ -51,6 +55,8 @@ public class SearchResultFragment extends Fragment implements SearchResultsInter
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupLoading(view);
+
         String searchData = SearchResultFragmentArgs.fromBundle(getArguments()).getSearchData();
         SearchType searchType = SearchResultFragmentArgs.fromBundle(getArguments()).getSearchType();
 
@@ -62,7 +68,7 @@ public class SearchResultFragment extends Fragment implements SearchResultsInter
         searchResult = new ArrayList<>();
         resultAdapter = new SearchResultAdapter(getActivity(), searchResult, this);
         recyclerView.setAdapter(resultAdapter);
-        searchResultPresenterInterface = new SearchResultPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
+        searchResultPresenterInterface = new SearchResultPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
 
         switch (searchType) {
             case SEARCH_BY_INGREDIENT: {
@@ -86,11 +92,24 @@ public class SearchResultFragment extends Fragment implements SearchResultsInter
     public void showSearchResults(List<Meal> meal) {
         resultAdapter.updateList(meal);
         resultAdapter.notifyDataSetChanged();
+        updateVisibility(View.VISIBLE, View.INVISIBLE);
     }
 
     @Override
     public void onItemClickListener(Meal meal) {
         ActionSearchResultFragmentToMealDetailsFragment navigationAction = SearchResultFragmentDirections.actionSearchResultFragmentToMealDetailsFragment(meal, REMOTE_RESULT);
         Navigation.findNavController(getView()).navigate(navigationAction);
+    }
+
+    private void setupLoading(@NonNull View view) {
+        result_group = view.findViewById(R.id.result_group);
+        loading = view.findViewById(R.id.result_loading);
+
+        updateVisibility(View.INVISIBLE, View.VISIBLE);
+    }
+
+    private void updateVisibility(int visible, int invisible) {
+        result_group.setVisibility(visible);
+        loading.setVisibility(invisible);
     }
 }

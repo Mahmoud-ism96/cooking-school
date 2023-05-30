@@ -81,13 +81,8 @@ public class ConcreteLocalSource implements LocalSource {
     }
 
     @Override
-    public boolean hasMeal(int id) {
-        Callable<Boolean> callable = new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return dao.hasMeal(id);
-            }
-        };
+    public boolean hasMeal(String id) {
+        Callable<Boolean> callable = () -> dao.hasMeal(id);
         FutureTask<Boolean> task = new FutureTask<>(callable);
         new Thread(task).start();
         try {
@@ -98,4 +93,23 @@ public class ConcreteLocalSource implements LocalSource {
         }
     }
 
+    @Override
+    public void deleteAllMeals() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dao.deleteAllMeals();
+            }
+        }).start();
+    }
+
+    @Override
+    public void insertAllMeal(List<Meal> meal) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dao.insertAllMeal(meal);
+            }
+        }).start();
+    }
 }

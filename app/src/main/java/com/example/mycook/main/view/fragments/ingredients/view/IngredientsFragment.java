@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.view.fragments.ingredients.presenter.IngredientsPresenter;
@@ -32,6 +34,8 @@ public class IngredientsFragment extends Fragment implements OnIngredientClickLi
     RecyclerView rv_ingredients;
     IngredientAdapter ingredientAdapter;
     List<Meal> ingredientsList;
+    Group ingredients_group;
+    LottieAnimationView loading;
 
     public IngredientsFragment() {
         // Required empty public constructor
@@ -47,6 +51,8 @@ public class IngredientsFragment extends Fragment implements OnIngredientClickLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupLoading(view);
+
         rv_ingredients = view.findViewById(R.id.rv_all_ingredients_list);
         rv_ingredients.setHasFixedSize(true);
         GridLayoutManager ingredientsLayoutManager = new GridLayoutManager(getContext(), 4);
@@ -55,7 +61,7 @@ public class IngredientsFragment extends Fragment implements OnIngredientClickLi
 
         ingredientAdapter = new IngredientAdapter(getActivity(), ingredientsList, this);
         rv_ingredients.setAdapter(ingredientAdapter);
-        ingredientsPresenterInterface = new IngredientsPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
+        ingredientsPresenterInterface = new IngredientsPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
         ingredientsPresenterInterface.getIngredients();
 
     }
@@ -64,11 +70,24 @@ public class IngredientsFragment extends Fragment implements OnIngredientClickLi
     public void showIngredients(List<Meal> meal) {
         ingredientAdapter.updateList(meal);
         ingredientAdapter.notifyDataSetChanged();
+        updateVisibility(View.VISIBLE, View.INVISIBLE);
     }
 
     @Override
     public void onIngredientClick(String ingredient) {
-        ActionIngredientsFragmentToSearchResultFragment navigationAction = IngredientsFragmentDirections.actionIngredientsFragmentToSearchResultFragment(ingredient,SEARCH_BY_INGREDIENT);
+        ActionIngredientsFragmentToSearchResultFragment navigationAction = IngredientsFragmentDirections.actionIngredientsFragmentToSearchResultFragment(ingredient, SEARCH_BY_INGREDIENT);
         Navigation.findNavController(getView()).navigate(navigationAction);
+    }
+
+    private void setupLoading(@NonNull View view) {
+        ingredients_group = view.findViewById(R.id.ingredients_group);
+        loading = view.findViewById(R.id.ingredients_loading);
+
+        updateVisibility(View.INVISIBLE, View.VISIBLE);
+    }
+
+    private void updateVisibility(int visible, int invisible) {
+        ingredients_group.setVisibility(visible);
+        loading.setVisibility(invisible);
     }
 }

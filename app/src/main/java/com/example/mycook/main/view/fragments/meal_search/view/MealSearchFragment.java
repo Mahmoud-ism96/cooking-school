@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
-import com.example.mycook.main.view.fragments.home.view.DailyInspirationAdapter;
 import com.example.mycook.main.view.fragments.home.view.OnDailyMealClickListener;
 import com.example.mycook.main.view.fragments.meal_search.presenter.MealSearchPresenter;
 import com.example.mycook.main.view.fragments.meal_search.presenter.MealSearchPresenterInterface;
@@ -28,7 +27,9 @@ import com.example.mycook.main.view.fragments.meal_search.view.MealSearchFragmen
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
+import com.example.mycook.util.SignUpDialog;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class MealSearchFragment extends Fragment implements OnDailyMealClickList
 
     MealSearchPresenterInterface mealSearchPresenterInterface;
     RecyclerView recyclerView;
-    DailyInspirationAdapter dailyInspirationAdapter;
+    MealSearchAdapter mealSearchAdapter;
     List<Meal> meals;
 
     public MealSearchFragment() {
@@ -67,10 +68,10 @@ public class MealSearchFragment extends Fragment implements OnDailyMealClickList
         ingredientsLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(ingredientsLayoutManager);
 
-        dailyInspirationAdapter = new DailyInspirationAdapter(getActivity(), meals, this);
-        recyclerView.setAdapter(dailyInspirationAdapter);
+        mealSearchAdapter = new MealSearchAdapter(getActivity(), meals, this);
+        recyclerView.setAdapter(mealSearchAdapter);
 
-        mealSearchPresenterInterface = new MealSearchPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
+        mealSearchPresenterInterface = new MealSearchPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
 
         textInputEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -92,7 +93,10 @@ public class MealSearchFragment extends Fragment implements OnDailyMealClickList
 
     @Override
     public void onFavClick(Meal meal) {
-        addMeal(meal);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+            addMeal(meal);
+        else
+            SignUpDialog.showSignupDialog(getActivity());
     }
 
     @Override
@@ -102,14 +106,14 @@ public class MealSearchFragment extends Fragment implements OnDailyMealClickList
     }
 
     @Override
-    public boolean mealExist(int mealID) {
+    public boolean mealExist(String mealID) {
         return mealSearchPresenterInterface.mealExist(mealID);
     }
 
     @Override
     public void showSearchMeals(List<Meal> meal) {
-        dailyInspirationAdapter.updateList(meal);
-        dailyInspirationAdapter.notifyDataSetChanged();
+        mealSearchAdapter.updateList(meal);
+        mealSearchAdapter.notifyDataSetChanged();
     }
 
     @Override
