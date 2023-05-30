@@ -3,15 +3,21 @@
         android:id="@+id/navigation_home"
         android:enabled="true"
         android:icon="@drawable/home_white_24dp"
-        android:title="Home"/>
+        android:title="Home" />
     <item
         android:id="@+id/navigation_search"
         android:enabled="true"
         android:icon="@drawable/search_white_24dp"
-        android:title="Search"/>
+        android:title="Search" />
     <item
         android:id="@+id/navigation_favourites"
         android:enabled="true"
         android:icon="@drawable/collections_bookmark_white_24dp"
         android:title="Favourites" />
+
+    <item
+        android:id="@+id/navigation_plan"
+        android:enabled="true"
+        android:icon="@drawable/event_white_24dp"
+        android:title="Plan" />
 </menu>

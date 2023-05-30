@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14"
         app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/card_item" />
+        tools:listitem="@layout/carousel_card_item" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline11"

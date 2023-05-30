@@ -8,4 +8,6 @@ public interface MealDetailsPresenterInterface {
     public boolean mealExist(int mealId);
 
     public void addToFav(Meal meal);
+
+    public void addToPlan(Meal meal, String day);
 }

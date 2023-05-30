@@ -29,6 +29,12 @@ public interface RepositoryInterface {
 
     public LiveData<List<Meal>> getStoredMeals();
 
+    public LiveData<List<Meal>> getMealByPlanDay(String day);
+
+    public void updateMealPlanDay(String meal_id, String day);
+
+    public void deletePlanDay(String meal_id);
+
     public void deleteMeal(Meal meal);
 
     public boolean hasMeal(int id);

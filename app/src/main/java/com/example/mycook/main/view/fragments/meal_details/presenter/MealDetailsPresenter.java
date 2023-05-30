@@ -42,6 +42,11 @@ public class MealDetailsPresenter implements MealDetailsPresenterInterface, Netw
     }
 
     @Override
+    public void addToPlan(Meal meal, String day) {
+        repo.updateMealPlanDay(Integer.toString(meal.getMealID()), day);
+    }
+
+    @Override
     public void onSuccessResult(Meals meals) {
         List<Meal> meal = meals.getMeals();
         view.showRemoteMealDetails(meal);

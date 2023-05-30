@@ -21,7 +21,6 @@ import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.view.fragments.favourites.presenter.FavouritesPresenter;
 import com.example.mycook.main.view.fragments.favourites.presenter.FavouritesPresenterInterface;
 import com.example.mycook.main.view.fragments.favourites.view.FavouritesFragmentDirections.ActionNavigationFavouritesToMealDetailsFragment;
-import com.example.mycook.main.view.fragments.home.view.DailyInspirationAdapter;
 import com.example.mycook.main.view.fragments.home.view.OnDailyMealClickListener;
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
@@ -32,7 +31,7 @@ import java.util.List;
 public class FavouritesFragment extends Fragment implements OnDailyMealClickListener, FavouritesInterface {
 
     RecyclerView recyclerView;
-    DailyInspirationAdapter dailyInspirationAdapter;
+    FavouritesAdapter favouritesAdapter;
     List<Meal> meal;
     FavouritesPresenterInterface favouritesPresenterInterface;
 
@@ -56,8 +55,8 @@ public class FavouritesFragment extends Fragment implements OnDailyMealClickList
         ingredientsLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(ingredientsLayoutManager);
 
-        dailyInspirationAdapter = new DailyInspirationAdapter(getActivity(), meal, this);
-        recyclerView.setAdapter(dailyInspirationAdapter);
+        favouritesAdapter = new FavouritesAdapter(getActivity(), meal, this);
+        recyclerView.setAdapter(favouritesAdapter);
 
         favouritesPresenterInterface = new FavouritesPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
         favouritesPresenterInterface.getFavMeals();
@@ -69,8 +68,8 @@ public class FavouritesFragment extends Fragment implements OnDailyMealClickList
         items.observe(this, new Observer<List<Meal>>() {
             @Override
             public void onChanged(List<Meal> items) {
-                dailyInspirationAdapter.updateList(items);
-                dailyInspirationAdapter.notifyDataSetChanged();
+                favouritesAdapter.updateList(items);
+                favouritesAdapter.notifyDataSetChanged();
             }
         });
     }

@@ -14,5 +14,11 @@ public interface LocalSource {
 
     public LiveData<List<Meal>> getAllStoredMeals();
 
+    public LiveData<List<Meal>> getMealByPlanDay(String day);
+
+    public void updateMealPlanDay(String meal_id, String day);
+
+    public void deletePlanDay(String meal_id);
+
     public boolean hasMeal(int id);
 }

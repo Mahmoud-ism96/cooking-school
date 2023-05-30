@@ -2,13 +2,16 @@ package com.example.mycook.main.view.fragments.meal_details.view;
 
 import static com.example.mycook.util.ResultType.LOCAL_RESULT;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +30,7 @@ import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
 import com.example.mycook.util.ResultType;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -40,6 +44,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
     String TAG = "MealDetailsFragment";
     private ImageView iv_thumbnail;
     private ImageButton btn_fav;
+    private ImageButton btn_addToPlan;
     private TextView tv_title;
     private TextView tv_category;
     private TextView tv_area;
@@ -91,6 +96,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
         yt_player = view.findViewById(R.id.vw_youtube);
         rv_ingredients = view.findViewById(R.id.rv_meal_ingredients);
         btn_fav = view.findViewById(R.id.btn_meal_details_fav);
+        btn_addToPlan = view.findViewById(R.id.btn_meal_details_plan);
     }
 
     private void setupMeal() {
@@ -116,13 +122,58 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
             @Override
             public void onClick(View view) {
                 mealDetailsPresenterInterface.addToFav(meal);
-                if (isAddedToFav)
-                    isAddedToFav = false;
-                else
-                    isAddedToFav = true;
+                if (isAddedToFav) isAddedToFav = false;
+                else isAddedToFav = true;
                 setFavIcon();
             }
         });
+
+        btn_addToPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPlanDialog(view);
+            }
+        });
+    }
+
+    private void showPlanDialog(View view) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(view.getContext());
+        builder.setIcon(R.drawable.edit_calendar_black_24dp);
+        builder.setTitle("Add Meal to Weekly Plan");
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.select_dialog_singlechoice);
+        arrayAdapter.add("Saturday");
+        arrayAdapter.add("Sunday");
+        arrayAdapter.add("Monday");
+        arrayAdapter.add("Tuesday");
+        arrayAdapter.add("Wednesday");
+        arrayAdapter.add("Thursday");
+        arrayAdapter.add("Friday");
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String strName = arrayAdapter.getItem(which);
+                meal.setWeekDay(strName);
+                Toast.makeText(view.getContext(), "Meal is added to " + strName + "'s Plan", Toast.LENGTH_SHORT).show();
+                if (!isAddedToFav) {
+                    isAddedToFav = true;
+                    mealDetailsPresenterInterface.addToFav(meal);
+                } else {
+                    mealDetailsPresenterInterface.addToPlan(meal, strName);
+                }
+                setFavIcon();
+
+            }
+        });
+        builder.show();
     }
 
     private void initYoutubePlayer() {
@@ -199,10 +250,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
     }
 
     public void setFavIcon() {
-        if (isAddedToFav)
-            btn_fav.setImageResource(R.drawable.turned_in_white_24dp);
-        else
-            btn_fav.setImageResource(R.drawable.turned_in_not_white_24dp);
+        if (isAddedToFav) btn_fav.setImageResource(R.drawable.turned_in_white_24dp);
+        else btn_fav.setImageResource(R.drawable.turned_in_not_white_24dp);
 
     }
 

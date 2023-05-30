@@ -1,4 +1,4 @@
-package com.example.mycook.main.view.fragments.home.view;
+package com.example.mycook.main.view.fragments.favourites.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,17 +9,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mycook.R;
+import com.example.mycook.main.view.fragments.home.view.OnDailyMealClickListener;
 import com.example.mycook.model.Meal;
-import com.google.android.material.carousel.MaskableFrameLayout;
 
 import java.util.List;
 
-public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirationAdapter.ViewHolder> {
+class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.ViewHolder> {
 
     private static final String TAG = "DailyInspirationAdapter";
     private Context context;
@@ -28,7 +29,7 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
 
     private boolean isAddedToFav = false;
 
-    public DailyInspirationAdapter(Context context, List<Meal> meals, OnDailyMealClickListener listener) {
+    public FavouritesAdapter(Context context, List<Meal> meals, OnDailyMealClickListener listener) {
         this.context = context;
         this.meals = meals;
         this.listener = listener;
@@ -40,18 +41,18 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
         public TextView tv_Category;
         public ImageView iv_Thumbnail;
         public ImageButton btn_addToFav;
-        public MaskableFrameLayout cardView;
+        public CardView cardView;
         public View layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             layout = itemView;
-            cardView = itemView.findViewById(R.id.carousel_card_view);
-            tv_Title = itemView.findViewById(R.id.carousel_card_title);
-            tv_Area = itemView.findViewById(R.id.carousel_card_area);
-            tv_Category = itemView.findViewById(R.id.carousel_card_category);
-            iv_Thumbnail = itemView.findViewById(R.id.carousel_card_thumbnail);
-            btn_addToFav = itemView.findViewById(R.id.btn_carousel_card_fav);
+            cardView = itemView.findViewById(R.id.card_view);
+            tv_Title = itemView.findViewById(R.id.card_title);
+            tv_Area = itemView.findViewById(R.id.card_area);
+            tv_Category = itemView.findViewById(R.id.card_category);
+            iv_Thumbnail = itemView.findViewById(R.id.card_thumbnail);
+            btn_addToFav = itemView.findViewById(R.id.btn_card_fav);
         }
     }
 
@@ -59,7 +60,7 @@ public class DailyInspirationAdapter extends RecyclerView.Adapter<DailyInspirati
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
-        View v = inflater.inflate(R.layout.carousel_card_item, recyclerView, false);
+        View v = inflater.inflate(R.layout.card_item, recyclerView, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }

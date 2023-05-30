@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycook.R;
@@ -22,7 +21,7 @@ import com.example.mycook.main.view.fragments.home.view.HomeFragmentDirections.A
 import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.network.MealsAPI;
-import com.jackandphantom.carouselrecyclerview.CarouselRecyclerview;
+import com.google.android.material.carousel.CarouselLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.List;
 public class HomeFragment extends Fragment implements OnDailyMealClickListener, HomeInterface {
 
     HomePresenterInterface homePresenterInterface;
-    CarouselRecyclerview recyclerView;
+    RecyclerView recyclerView;
     DailyInspirationAdapter dailyInspirationAdapter;
     List<Meal> dailyMeals;
 
@@ -53,13 +52,11 @@ public class HomeFragment extends Fragment implements OnDailyMealClickListener, 
 
         recyclerView = view.findViewById(R.id.rv_daily_list);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
-        ingredientsLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(ingredientsLayoutManager);
+        recyclerView.setLayoutManager(new CarouselLayoutManager());
 
         dailyInspirationAdapter = new DailyInspirationAdapter(getActivity(), dailyMeals, this);
         recyclerView.setAdapter(dailyInspirationAdapter);
-        recyclerView.setIntervalRatio(0.7f);
+
         homePresenterInterface = new HomePresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(), ConcreteLocalSource.getInstance(getContext())));
         dailyMeals = new ArrayList<>();
         for (int i = 0; i < 5; i++) {

@@ -49,7 +49,7 @@ public class Meal implements Parcelable {
         measurement7 = in.readString();
         measurement8 = in.readString();
         measurement9 = in.readString();
-        measurement10 =in.readString();
+        measurement10 = in.readString();
         measurement11 = in.readString();
         measurement12 = in.readString();
         measurement13 = in.readString();
@@ -327,8 +327,10 @@ public class Meal implements Parcelable {
 
     @SerializedName("strIngredient")
     private String ingredient;
-    @ColumnInfo(name = "weekDay")
+
+    @ColumnInfo(name = "weekday")
     private String weekDay;
+
 
     public Meal(int mealID, String name, String area, String category, String instructions, String thumbnail, String ingredient1, String ingredient2, String ingredient3, String ingredient4, String ingredient5, String ingredient6, String ingredient7, String ingredient8, String ingredient9, String ingredient10, String ingredient11, String ingredient12, String ingredient13, String ingredient14, String ingredient15, String ingredient16, String ingredient17, String ingredient18, String ingredient19, String ingredient20, String measurement1, String measurement2, String measurement3, String measurement4, String measurement5, String measurement6, String measurement7, String measurement8, String measurement9, String measurement10, String measurement11, String measurement12, String measurement13, String measurement14, String measurement15, String measurement16, String measurement17, String measurement18, String measurement19, String measurement20, String youtubeURL) {
         this.mealID = mealID;
