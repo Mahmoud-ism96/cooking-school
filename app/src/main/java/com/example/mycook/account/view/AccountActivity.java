@@ -3,7 +3,6 @@ package com.example.mycook.account.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,7 +39,7 @@ public class AccountActivity extends AppCompatActivity implements AccountInterfa
     TextView tv_account_name;
     Button btn_account_sign_out;
     FirebaseAuth mAuth;
-    FirebaseFirestore db;
+    FirebaseFirestore firebaseDB;
     FirebaseUser currentUser;
 
     List<Meal> meals;
@@ -58,7 +57,7 @@ public class AccountActivity extends AppCompatActivity implements AccountInterfa
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        db = FirebaseFirestore.getInstance();
+        firebaseDB = FirebaseFirestore.getInstance();
         meals = new ArrayList<>();
 
         accountPresenterInterface = new AccountPresenter(this,Repository.getInstance(getApplication(), MealsAPI.getInstance(getApplication()), ConcreteLocalSource.getInstance(getApplication())));
@@ -110,19 +109,17 @@ public class AccountActivity extends AppCompatActivity implements AccountInterfa
     }
 
     private void updateUserDataInFireStore() {
-        Log.i("AccountActivity",currentUser.getEmail());
         UserData updatedUser = new UserData(currentUser.getEmail(), meals);
         Map<String, Object> data = new HashMap<>();
         data.put("users", updatedUser);
-        db.collection("users").document(currentUser.getUid()).set(data, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+        firebaseDB.collection("users").document(currentUser.getUid()).set(data, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Log.d("hey", "User updated successfully");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("hey", "Error updating user", e);
+
             }
         });
     }

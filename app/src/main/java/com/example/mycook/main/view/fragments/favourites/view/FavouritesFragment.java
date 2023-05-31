@@ -39,6 +39,7 @@ public class FavouritesFragment extends Fragment implements OnDailyMealClickList
     FavouritesPresenterInterface favouritesPresenterInterface;
     TextView tv_favourites_signup;
     Group favourites_group;
+    Group favourites_no_data_group;
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -54,9 +55,7 @@ public class FavouritesFragment extends Fragment implements OnDailyMealClickList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tv_favourites_signup = view.findViewById(R.id.tv_favourites_signup);
-        favourites_group = view.findViewById(R.id.favourites_group);
-        recyclerView = view.findViewById(R.id.rv_favourite_list);
+        initViews(view);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             recyclerView.setHasFixedSize(true);
             LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
@@ -69,21 +68,42 @@ public class FavouritesFragment extends Fragment implements OnDailyMealClickList
             favouritesPresenterInterface = new FavouritesPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
             favouritesPresenterInterface.getFavMeals();
         } else {
-            tv_favourites_signup.setVisibility(View.VISIBLE);
-            favourites_group.setVisibility(View.INVISIBLE);
+            showTextSignUp();
         }
+    }
+
+    private void initViews(@NonNull View view) {
+        tv_favourites_signup = view.findViewById(R.id.tv_favourites_signup);
+        favourites_group = view.findViewById(R.id.favourites_group);
+        favourites_no_data_group = view.findViewById(R.id.favourites_no_data_group);
+        recyclerView = view.findViewById(R.id.rv_favourite_list);
+    }
+
+    private void showTextSignUp() {
+        tv_favourites_signup.setVisibility(View.VISIBLE);
+        favourites_group.setVisibility(View.INVISIBLE);
     }
 
 
     @Override
-    public void showFavMeals(LiveData<List<Meal>> items) {
-        items.observe(this, new Observer<List<Meal>>() {
+    public void showFavMeals(LiveData<List<Meal>> meals) {
+        meals.observe(this, new Observer<List<Meal>>() {
             @Override
-            public void onChanged(List<Meal> items) {
-                favouritesAdapter.updateList(items);
-                favouritesAdapter.notifyDataSetChanged();
+            public void onChanged(List<Meal> meals) {
+                if (!meals.isEmpty()) {
+                    favourites_no_data_group.setVisibility(View.INVISIBLE);
+                    favourites_group.setVisibility(View.VISIBLE);
+                    favouritesAdapter.updateList(meals);
+                    favouritesAdapter.notifyDataSetChanged();
+                } else {
+                    showTextNoData();
+                }
             }
         });
+    }
+    private void showTextNoData() {
+        favourites_no_data_group.setVisibility(View.VISIBLE);
+        favourites_group.setVisibility(View.INVISIBLE);
     }
 
     @Override

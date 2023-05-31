@@ -33,8 +33,8 @@ public class MealsAPI implements RemoteSource {
 
         OkHttpClient okHttpClient = new OkHttpClient
                 .Builder().cache(cache).build();
-        
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).client(client).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
 
         apiService = retrofit.create(ApiInterface.class);
     }

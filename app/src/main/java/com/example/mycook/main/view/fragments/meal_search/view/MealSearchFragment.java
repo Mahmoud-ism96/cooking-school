@@ -58,11 +58,12 @@ public class MealSearchFragment extends Fragment implements OnDailyMealClickList
         super.onViewCreated(view, savedInstanceState);
 
         textInputEditText = view.findViewById(R.id.et_recipe_search);
+        recyclerView = view.findViewById(R.id.rv_meal_search);
+
         textInputEditText.requestFocus();
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(textInputEditText, InputMethodManager.SHOW_IMPLICIT);
 
-        recyclerView = view.findViewById(R.id.rv_meal_search);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
         ingredientsLayoutManager.setOrientation(RecyclerView.VERTICAL);

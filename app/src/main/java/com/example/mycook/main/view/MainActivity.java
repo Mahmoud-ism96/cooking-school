@@ -2,7 +2,6 @@ package com.example.mycook.main.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btn_account;
     NavController navController;
     BottomNavigationView navView;
-    FirebaseFirestore db;
+    FirebaseFirestore firebaseDB;
     Boolean isExist;
     FirebaseUser currentUser;
     MainPresenterInterface mainPresenterInterface;
@@ -51,12 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
         mainPresenterInterface = new MainPresenter(Repository.getInstance(getApplication(), MealsAPI.getInstance(getApplication()), ConcreteLocalSource.getInstance(getApplication())));
 
-        db = FirebaseFirestore.getInstance();
+        firebaseDB = FirebaseFirestore.getInstance();
         isExist = false;
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (currentUser != null)
-            checkDataInFireStore();
+        if (currentUser != null) checkDataInFireStore();
 
         navView = findViewById(R.id.bottom_navigation);
         navController = Navigation.findNavController(this, R.id.main_nav_host_fragment);
@@ -82,34 +80,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkDataInFireStore() {
 
-        db.collection("users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (document.getId().equals(currentUser.getUid())) {
-                                    //her you need to contain data from FireStore to your object
-                                    Map<String, Object> data = document.getData();
+        firebaseDB.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document.getId().equals(currentUser.getUid())) {
+                            //her you need to contain data from FireStore to your object
+                            Map<String, Object> data = document.getData();
 
 //                                    UserData loggedInUser = document.toObject(UserData.class);
 
-                                    UserData userData = new UserData((Map<String, Object>) data.get("users"));
-                                    Log.i("MainActivity", document.getData() + "");
-                                    if (userData.getStoredMeals() != null)
-                                        mainPresenterInterface.insertAllMeals(userData.getStoredMeals());
-                                    isExist = true;
-                                }
-                            }
-                            if (!isExist) {
-                                createNewUserInFireStore();
-                            }
-                        } else {
-                            Log.d("hey", "Error getting documents.", task.getException());
+                            UserData userData = new UserData((Map<String, Object>) data.get("users"));
+                            if (userData.getStoredMeals() != null)
+                                mainPresenterInterface.insertAllMeals(userData.getStoredMeals());
+                            isExist = true;
                         }
                     }
-                });
+                    if (!isExist) {
+                        createNewUserInFireStore();
+                    }
+                }
+            }
+        });
     }
 
     private void createNewUserInFireStore() {
@@ -117,20 +110,15 @@ public class MainActivity extends AppCompatActivity {
         UserData newUser = new UserData(currentUser.getEmail());
         user.put("users", newUser);
 
-        db.collection("users")
-                .document(currentUser.getUid())
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("hey", "new User Added");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("hey", "Error adding document", e);
-                    }
-                });
+        firebaseDB.collection("users").document(currentUser.getUid()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
     }
 }

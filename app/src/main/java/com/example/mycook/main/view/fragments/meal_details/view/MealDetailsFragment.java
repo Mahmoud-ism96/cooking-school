@@ -75,18 +75,24 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        meal = MealDetailsFragmentArgs.fromBundle(getArguments()).getMealDetail();
-        resultType = MealDetailsFragmentArgs.fromBundle(getArguments()).getResultType();
+        getDataFromSaveArgs();
 
         initViews(view);
+
         mealDetailsPresenterInterface = new MealDetailsPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
 
         ingredientsList = new ArrayList<>();
+
         if (resultType == LOCAL_RESULT) setupMeal();
         else {
             mealDetailsPresenterInterface.getMealById(meal.getMealID());
         }
 
+    }
+
+    private void getDataFromSaveArgs() {
+        meal = com.example.mycook.main.view.fragments.meal_details.view.MealDetailsFragmentArgs.fromBundle(getArguments()).getMealDetail();
+        resultType = com.example.mycook.main.view.fragments.meal_details.view.MealDetailsFragmentArgs.fromBundle(getArguments()).getResultType();
     }
 
     private void initViews(@NonNull View view) {

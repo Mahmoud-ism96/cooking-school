@@ -41,7 +41,10 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     ArrayList<String> weekDays;
     ArrayList<Meal> meals;
     TextView tv_plan_signup;
+    TextView tv_select_a_day;
     Group plan_group;
+
+    Group plan_no_daily_group;
 
 
     public PlanFragment() {
@@ -49,8 +52,7 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_plan, container, false);
     }
@@ -59,38 +61,30 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tv_plan_signup = view.findViewById(R.id.tv_plan_signup);
-        plan_group = view.findViewById(R.id.plan_group);
+        initViews(view);
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            initWeekDays();
             planPresenterInterface = new PlanPresenter(this, Repository.getInstance(getContext(), MealsAPI.getInstance(getActivity()), ConcreteLocalSource.getInstance(getContext())));
 
-            rv_day_list = view.findViewById(R.id.rv_week_days_list);
-            rv_day_list.setHasFixedSize(true);
-            LinearLayoutManager dayLayoutManager = new LinearLayoutManager(getContext());
-            dayLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-            rv_day_list.setLayoutManager(dayLayoutManager);
+            initWeekDaysList();
 
-            planDaysAdapter = new PlanDaysAdapter(rv_day_list, getActivity(), weekDays, this);
-            rv_day_list.setAdapter(planDaysAdapter);
-
-
-            rv_meal_list = view.findViewById(R.id.rv_plan_meal_list);
-            rv_meal_list.setHasFixedSize(true);
-            LinearLayoutManager mealLayoutManager = new LinearLayoutManager(getContext());
-            mealLayoutManager.setOrientation(RecyclerView.VERTICAL);
-            rv_meal_list.setLayoutManager(mealLayoutManager);
-
-            planMealsAdapter = new PlanMealsAdapter(getActivity(), meals, this);
-            rv_meal_list.setAdapter(planMealsAdapter);
+            setupPlanDays();
+            setupPlanMeals();
         } else {
-            tv_plan_signup.setVisibility(View.VISIBLE);
-            plan_group.setVisibility(View.INVISIBLE);
+            showSignUpText();
         }
     }
 
-    private void initWeekDays() {
+    private void initViews(@NonNull View view) {
+        tv_plan_signup = view.findViewById(R.id.tv_plan_signup);
+        tv_select_a_day = view.findViewById(R.id.tv_plan_select_day);
+        plan_group = view.findViewById(R.id.plan_group);
+        plan_no_daily_group = view.findViewById(R.id.group_no_daily_plan);
+        rv_day_list = view.findViewById(R.id.rv_week_days_list);
+        rv_meal_list = view.findViewById(R.id.rv_plan_meal_list);
+    }
+
+    private void initWeekDaysList() {
         weekDays = new ArrayList<>();
         weekDays.add("Saturday");
         weekDays.add("Sunday");
@@ -101,8 +95,29 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
         weekDays.add("Friday");
     }
 
+    private void setupPlanDays() {
+        rv_day_list.setHasFixedSize(true);
+        LinearLayoutManager dayLayoutManager = new LinearLayoutManager(getContext());
+        dayLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        rv_day_list.setLayoutManager(dayLayoutManager);
+
+        planDaysAdapter = new PlanDaysAdapter(rv_day_list, getActivity(), weekDays, this);
+        rv_day_list.setAdapter(planDaysAdapter);
+    }
+
+    private void setupPlanMeals() {
+        rv_meal_list.setHasFixedSize(true);
+        LinearLayoutManager mealLayoutManager = new LinearLayoutManager(getContext());
+        mealLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        rv_meal_list.setLayoutManager(mealLayoutManager);
+
+        planMealsAdapter = new PlanMealsAdapter(getActivity(), meals, this);
+        rv_meal_list.setAdapter(planMealsAdapter);
+    }
+
     @Override
     public void selectDayMeals(String day) {
+        tv_select_a_day.setVisibility(View.INVISIBLE);
         planPresenterInterface.getDayMeals(day);
     }
 
@@ -113,12 +128,15 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     }
 
     @Override
-    public void showDayMeals(LiveData<List<Meal>> items) {
-        items.observe(this, new Observer<List<Meal>>() {
+    public void showDayMeals(LiveData<List<Meal>> meals) {
+        meals.observe(this, new Observer<List<Meal>>() {
             @Override
-            public void onChanged(List<Meal> items) {
-                planMealsAdapter.updateList(items);
-                planMealsAdapter.notifyDataSetChanged();
+            public void onChanged(List<Meal> meals) {
+                if (!meals.isEmpty()) {
+                    showMealRecyclerView();
+                    planMealsAdapter.updateList(meals);
+                    planMealsAdapter.notifyDataSetChanged();
+                } else showTextNoData();
             }
         });
     }
@@ -126,5 +144,20 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     @Override
     public void removeFromPlan(Meal meal) {
         planPresenterInterface.removeFromWeek(meal);
+    }
+
+    private void showMealRecyclerView() {
+        plan_no_daily_group.setVisibility(View.INVISIBLE);
+        rv_meal_list.setVisibility(View.VISIBLE);
+    }
+
+    private void showSignUpText() {
+        tv_plan_signup.setVisibility(View.VISIBLE);
+        plan_group.setVisibility(View.INVISIBLE);
+    }
+
+    private void showTextNoData() {
+        rv_meal_list.setVisibility(View.INVISIBLE);
+        plan_no_daily_group.setVisibility(View.VISIBLE);
     }
 }

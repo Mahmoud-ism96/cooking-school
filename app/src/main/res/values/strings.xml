@@ -57,4 +57,6 @@
     <string name="dialog_skip_btn_negative">NO, GO BACK</string>
     <string name="dialog_skip_btn_positive">YES, I\'M SURE</string>
     <string name="not_signed_in_text">Please Sign Up  to Access Extra Features</string>
+    <string name="no_favourites_data">Save Your First Recipe!</string>
+    <string name="plan_select_day">Select a Day to show your Plan</string>
 </resources>
