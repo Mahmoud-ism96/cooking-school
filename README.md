@@ -2,14 +2,18 @@
 
 Cooking School is an Android application designed to provide users with a comprehensive cooking experience. With a wide range of features and functionalities, Cooking School aims to inspire users in the kitchen, help them discover new recipes, and make their cooking journey enjoyable and convenient.
 
-## Table of Contents
 
+## Table of Contents
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [API Reference](#api-reference)
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Contributing](#contributing)
 - [License](#license)
+
+## Screenshots
+![Untitled-1 copy 2](https://github.com/Mahmoud-ism96/my-cook/assets/66648923/990e5169-062d-4ef6-bf35-f47366031826)
 
 ## Features
 
