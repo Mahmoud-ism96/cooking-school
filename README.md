@@ -38,7 +38,7 @@ Cooking School is an Android application that provides cooking tutorials and rec
 
 1. Clone the repository:
    
-   ```git clone https://github.com/your-username/cooking-school.git```
+   ```git clone https://github.com/Mahmoud-ism96/my-cook.git```
 
 2. Open the project in Android Studio.
 
