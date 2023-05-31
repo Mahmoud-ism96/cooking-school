@@ -1,6 +1,15 @@
 # Cooking School
 
-Cooking School is an Android application that provides cooking tutorials and recipes to users. It aims to teach users various cooking techniques and help them discover new recipes to try at home.
+Cooking School is an Android application designed to provide users with a comprehensive cooking experience. With a wide range of features and functionalities, Cooking School aims to inspire users in the kitchen, help them discover new recipes, and make their cooking journey enjoyable and convenient.
+
+## Table of Contents
+
+- [Features](#features)
+- [API Reference](#api-reference)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
@@ -38,7 +47,7 @@ Cooking School is an Android application that provides cooking tutorials and rec
 
 1. Clone the repository:
    
-   ```git clone https://github.com/Mahmoud-ism96/my-cook.git```
+   ```git clone https://github.com/your-username/cooking-school.git```
 
 2. Open the project in Android Studio.
 
