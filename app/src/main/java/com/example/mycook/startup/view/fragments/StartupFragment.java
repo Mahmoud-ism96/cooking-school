@@ -1,6 +1,9 @@
 package com.example.mycook.startup.view.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,6 +60,8 @@ public class StartupFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        checkConnectivity();
+
         initButtons(view);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -70,16 +75,30 @@ public class StartupFragment extends Fragment {
         tv_skip = view.findViewById(R.id.btn_skip);
 
         tv_skip.setOnClickListener(skip -> {
-            new MaterialAlertDialogBuilder(getContext()).setTitle(R.string.dialog_skip_title).setMessage(R.string.dialog_skip_body)
-                    .setNegativeButton(getResources().getString(R.string.dialog_skip_btn_negative), (dialog, which) -> {
-                    })
-                    .setPositiveButton(getResources().getString(R.string.dialog_skip_btn_positive), (dialog, which) -> {
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }).show();
+            if (checkConnectivity()) {
+                new MaterialAlertDialogBuilder(getContext()).setTitle(R.string.dialog_skip_title).setMessage(R.string.dialog_skip_body)
+                        .setNegativeButton(getResources().getString(R.string.dialog_skip_btn_negative), (dialog, which) -> {
+                        })
+                        .setPositiveButton(getResources().getString(R.string.dialog_skip_btn_positive), (dialog, which) -> {
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }).show();
+            }else {
+                new MaterialAlertDialogBuilder(getContext()).setTitle(R.string.dialog_no_internet).setMessage(R.string.dialog_no_internet_body)
+                        .setPositiveButton(getResources().getString(R.string.dialog_no_internet_btn_positive), (dialog, which) -> {
+                        }).show();
+            }
         });
 
+
+    }
+
+    private boolean checkConnectivity() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        boolean isConnected = networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        return isConnected;
     }
 
     @Override

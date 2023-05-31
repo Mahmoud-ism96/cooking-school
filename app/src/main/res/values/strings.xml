@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Cook</string>
+    <string name="app_name">Cooking School</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -59,4 +59,7 @@
     <string name="not_signed_in_text">Please Sign Up  to Access Extra Features</string>
     <string name="no_favourites_data">Save Your First Recipe!</string>
     <string name="plan_select_day">Select a Day to show your Plan</string>
+    <string name="dialog_no_internet">Connection Error</string>
+    <string name="dialog_no_internet_body">No Internet Connection. Make sure Wi-Fi, or celluar data is turned ok, then try again.</string>
+    <string name="dialog_no_internet_btn_positive">Ok</string>
 </resources>

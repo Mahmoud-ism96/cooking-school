@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
+import com.example.mycook.main.view.MainActivity;
 import com.example.mycook.main.view.fragments.result.presenter.SearchResultPresenter;
 import com.example.mycook.main.view.fragments.result.presenter.SearchResultPresenterInterface;
 import com.example.mycook.main.view.fragments.result.view.SearchResultFragmentDirections.ActionSearchResultFragmentToMealDetailsFragment;
@@ -52,9 +53,27 @@ public class SearchResultFragment extends Fragment implements SearchResultsInter
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity) requireActivity()).btn_back.setVisibility(View.VISIBLE);
+        ((MainActivity) requireActivity()).navView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).btn_back.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((MainActivity) requireActivity()).navView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setupLoading(view);
 
         String searchData = SearchResultFragmentArgs.fromBundle(getArguments()).getSearchData();

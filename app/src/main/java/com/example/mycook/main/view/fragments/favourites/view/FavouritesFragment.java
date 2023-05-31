@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
+import com.example.mycook.main.view.MainActivity;
 import com.example.mycook.main.view.fragments.favourites.presenter.FavouritesPresenter;
 import com.example.mycook.main.view.fragments.favourites.presenter.FavouritesPresenterInterface;
 import com.example.mycook.main.view.fragments.favourites.view.FavouritesFragmentDirections.ActionNavigationFavouritesToMealDetailsFragment;
@@ -49,6 +50,13 @@ public class FavouritesFragment extends Fragment implements OnDailyMealClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favourites, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).navView.setVisibility(View.VISIBLE);
+        ((MainActivity) requireActivity()).btn_back.setVisibility(View.GONE);
     }
 
     @Override

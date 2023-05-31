@@ -2,9 +2,10 @@ package com.example.mycook.main.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -15,62 +16,78 @@ import com.example.mycook.account.view.AccountActivity;
 import com.example.mycook.db.ConcreteLocalSource;
 import com.example.mycook.main.presenter.MainPresenter;
 import com.example.mycook.main.presenter.MainPresenterInterface;
+import com.example.mycook.model.Meal;
 import com.example.mycook.model.Repository;
 import com.example.mycook.model.UserData;
 import com.example.mycook.network.MealsAPI;
 import com.example.mycook.util.SignUpDialog;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainInterface {
 
+    private String TAG = "MainActivity";
     ImageButton btn_account;
+    public ImageButton btn_back;
     NavController navController;
-    BottomNavigationView navView;
-    FirebaseFirestore firebaseDB;
+    public BottomNavigationView navView;
+    FirebaseFirestore fireStoreDB;
     Boolean isExist;
-    FirebaseUser currentUser;
+    FirebaseUser currentFirebaseUser;
     MainPresenterInterface mainPresenterInterface;
+
+    static List<Meal> meals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainPresenterInterface = new MainPresenter(Repository.getInstance(getApplication(), MealsAPI.getInstance(getApplication()), ConcreteLocalSource.getInstance(getApplication())));
+        initViews();
 
-        firebaseDB = FirebaseFirestore.getInstance();
-        isExist = false;
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        initData();
+    }
 
-        if (currentUser != null) checkDataInFireStore();
-
+    private void initViews() {
         navView = findViewById(R.id.bottom_navigation);
-        navController = Navigation.findNavController(this, R.id.main_nav_host_fragment);
-        NavigationUI.setupWithNavController(navView, navController);
-
         btn_account = findViewById(R.id.btn_account);
+        btn_back = findViewById(R.id.btn_back);
+    }
+
+    private void initData() {
+        mainPresenterInterface = new MainPresenter(this, Repository.getInstance(getApplication(), MealsAPI.getInstance(getApplication()), ConcreteLocalSource.getInstance(getApplication())));
+        isExist = false;
+        meals = new ArrayList<>();
+
+        initFirebaseDB();
+
+        initNavigation();
 
         btn_account.setOnClickListener(view -> {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            if (currentFirebaseUser != null) {
                 Intent intent = new Intent(getApplication(), AccountActivity.class);
                 startActivity(intent);
             } else SignUpDialog.showSignupDialog(MainActivity.this);
         });
 
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.popBackStack();
+            }
+        });
+
         navController.addOnDestinationChangedListener((navController, destination, bundle) -> {
-            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            if (currentFirebaseUser == null) {
                 if (destination.getId() == R.id.navigation_plan || destination.getId() == R.id.navigation_favourites) {
                     SignUpDialog.showSignupDialog(MainActivity.this);
                 }
@@ -78,28 +95,32 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void initFirebaseDB() {
+        fireStoreDB = FirebaseFirestore.getInstance();
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentFirebaseUser != null) checkDataInFireStore();
+    }
+
+    private void initNavigation() {
+        navController = Navigation.findNavController(this, R.id.main_nav_host_fragment);
+        NavigationUI.setupWithNavController(navView, navController);
+    }
+
     private void checkDataInFireStore() {
 
-        firebaseDB.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (document.getId().equals(currentUser.getUid())) {
-                            //her you need to contain data from FireStore to your object
-                            Map<String, Object> data = document.getData();
-
-//                                    UserData loggedInUser = document.toObject(UserData.class);
-
-                            UserData userData = new UserData((Map<String, Object>) data.get("users"));
-                            if (userData.getStoredMeals() != null)
-                                mainPresenterInterface.insertAllMeals(userData.getStoredMeals());
-                            isExist = true;
-                        }
+        fireStoreDB.collection("users").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    if (document.getId().equals(currentFirebaseUser.getUid())) {
+                        Map<String, Object> data = document.getData();
+                        UserData userData = new UserData((Map<String, Object>) data.get("users"));
+                        if (userData.getStoredMeals() != null)
+                            mainPresenterInterface.insertAllMeals(userData.getStoredMeals());
+                        isExist = true;
                     }
-                    if (!isExist) {
-                        createNewUserInFireStore();
-                    }
+                }
+                if (!isExist) {
+                    createNewUserInFireStore();
                 }
             }
         });
@@ -107,18 +128,39 @@ public class MainActivity extends AppCompatActivity {
 
     private void createNewUserInFireStore() {
         Map<String, Object> user = new HashMap<>();
-        UserData newUser = new UserData(currentUser.getEmail());
+        UserData newUser = new UserData(currentFirebaseUser.getEmail());
         user.put("users", newUser);
 
-        firebaseDB.collection("users").document(currentUser.getUid()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
+        fireStoreDB.collection("users").document(currentFirebaseUser.getUid()).set(user)
+                .addOnSuccessListener(unused -> Log.i(TAG, "Success"))
+                .addOnFailureListener(e -> Log.i(TAG, "Failure: " + e));
+    }
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-            }
-        });
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mainPresenterInterface.getStoredMeals();
+    }
+
+    @Override
+    public void getAllStoredMeals(List<Meal> allMeals) {
+        meals = allMeals;
+        updateDatabase();
+    }
+
+    public void updateDatabase() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            updateUserDataInFireStoreDB();
+
+        }
+    }
+
+    private void updateUserDataInFireStoreDB() {
+        UserData updatedUserData = new UserData(currentFirebaseUser.getEmail(), meals);
+        Map<String, Object> data = new HashMap<>();
+        data.put("users", updatedUserData);
+        fireStoreDB.collection("users").document(currentFirebaseUser.getUid()).set(data, SetOptions.merge())
+                .addOnSuccessListener(unused -> Log.i(TAG, "Success"))
+                .addOnFailureListener(e -> Log.i(TAG, "Failure: " + e));
     }
 }

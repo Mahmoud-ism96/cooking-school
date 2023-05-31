@@ -73,19 +73,9 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         Glide.with(context).load(meals.get(position).getThumbnail()).apply(new RequestOptions().override(1000, 1000)).placeholder(R.drawable.loading_thumbnail).error(R.drawable.error_thumbnail).into(holder.iv_Thumbnail);
 
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onMealClick(meals.get(position));
-            }
-        });
+        holder.cardView.setOnClickListener(view -> listener.onMealClick(meals.get(position)));
 
-        holder.btn_removeFromPlan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.removeFromPlan(meals.get(position));
-            }
-        });
+        holder.btn_removeFromPlan.setOnClickListener(view -> listener.removeFromPlan(meals.get(position)));
 
 
     }

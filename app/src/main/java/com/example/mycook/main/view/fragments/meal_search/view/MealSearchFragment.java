@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
+import com.example.mycook.main.view.MainActivity;
 import com.example.mycook.main.view.fragments.home.view.OnDailyMealClickListener;
 import com.example.mycook.main.view.fragments.meal_search.presenter.MealSearchPresenter;
 import com.example.mycook.main.view.fragments.meal_search.presenter.MealSearchPresenterInterface;
@@ -51,6 +52,25 @@ public class MealSearchFragment extends Fragment implements OnDailyMealClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meal_search, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity) requireActivity()).btn_back.setVisibility(View.VISIBLE);
+        ((MainActivity) requireActivity()).navView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).btn_back.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((MainActivity) requireActivity()).navView.setVisibility(View.VISIBLE);
     }
 
     @Override

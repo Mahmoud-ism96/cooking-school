@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
+import com.example.mycook.main.view.MainActivity;
 import com.example.mycook.main.view.fragments.ingredients.presenter.IngredientsPresenter;
 import com.example.mycook.main.view.fragments.ingredients.presenter.IngredientsPresenterInterface;
 import com.example.mycook.main.view.fragments.ingredients.view.IngredientsFragmentDirections.ActionIngredientsFragmentToSearchResultFragment;
@@ -45,6 +46,13 @@ public class IngredientsFragment extends Fragment implements OnIngredientClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_ingredients, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity) requireActivity()).navView.setVisibility(View.GONE);
+        ((MainActivity) requireActivity()).btn_back.setVisibility(View.VISIBLE);
     }
 
     @Override

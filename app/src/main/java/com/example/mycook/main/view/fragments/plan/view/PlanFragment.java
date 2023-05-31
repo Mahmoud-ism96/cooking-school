@@ -13,13 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
+import com.example.mycook.main.view.MainActivity;
 import com.example.mycook.main.view.fragments.plan.presenter.PlanPresenter;
 import com.example.mycook.main.view.fragments.plan.presenter.PlanPresenterInterface;
 import com.example.mycook.main.view.fragments.plan.view.PlanFragmentDirections.ActionNavigationPlanToMealDetailsFragment;
@@ -43,7 +43,6 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     TextView tv_plan_signup;
     TextView tv_select_a_day;
     Group plan_group;
-
     Group plan_no_daily_group;
 
 
@@ -58,6 +57,14 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).navView.setVisibility(View.VISIBLE);
+        ((MainActivity) requireActivity()).btn_back.setVisibility(View.GONE);
+        plan_no_daily_group.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -69,7 +76,6 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
             initWeekDaysList();
 
             setupPlanDays();
-            setupPlanMeals();
         } else {
             showSignUpText();
         }
@@ -105,6 +111,13 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
         rv_day_list.setAdapter(planDaysAdapter);
     }
 
+    @Override
+    public void selectDayMeals(String day) {
+        tv_select_a_day.setVisibility(View.INVISIBLE);
+        planPresenterInterface.getDayMeals(day);
+        setupPlanMeals();
+    }
+
     private void setupPlanMeals() {
         rv_meal_list.setHasFixedSize(true);
         LinearLayoutManager mealLayoutManager = new LinearLayoutManager(getContext());
@@ -116,12 +129,6 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     }
 
     @Override
-    public void selectDayMeals(String day) {
-        tv_select_a_day.setVisibility(View.INVISIBLE);
-        planPresenterInterface.getDayMeals(day);
-    }
-
-    @Override
     public void onMealClick(Meal meal) {
         ActionNavigationPlanToMealDetailsFragment navigationAction = PlanFragmentDirections.actionNavigationPlanToMealDetailsFragment(meal, LOCAL_RESULT);
         Navigation.findNavController(getView()).navigate(navigationAction);
@@ -129,14 +136,13 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
 
     @Override
     public void showDayMeals(LiveData<List<Meal>> meals) {
-        meals.observe(this, new Observer<List<Meal>>() {
-            @Override
-            public void onChanged(List<Meal> meals) {
-                if (!meals.isEmpty()) {
-                    showMealRecyclerView();
-                    planMealsAdapter.updateList(meals);
-                    planMealsAdapter.notifyDataSetChanged();
-                } else showTextNoData();
+        meals.observe(getViewLifecycleOwner(), dayMeals -> {
+            if (!dayMeals.isEmpty()) {
+                showMealRecyclerView();
+                planMealsAdapter.updateList(dayMeals);
+                planMealsAdapter.notifyDataSetChanged();
+            } else {
+                showTextNoData();
             }
         });
     }
@@ -152,6 +158,7 @@ public class PlanFragment extends Fragment implements OnPlanClickListener, PlanI
     }
 
     private void showSignUpText() {
+        tv_select_a_day.setVisibility(View.INVISIBLE);
         tv_plan_signup.setVisibility(View.VISIBLE);
         plan_group.setVisibility(View.INVISIBLE);
     }

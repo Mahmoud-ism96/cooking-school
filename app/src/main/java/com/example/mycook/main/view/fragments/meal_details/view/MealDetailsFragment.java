@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mycook.R;
 import com.example.mycook.db.ConcreteLocalSource;
+import com.example.mycook.main.view.MainActivity;
 import com.example.mycook.main.view.fragments.meal_details.presenter.MealDetailsPresenter;
 import com.example.mycook.main.view.fragments.meal_details.presenter.MealDetailsPresenterInterface;
 import com.example.mycook.model.Ingredient;
@@ -72,8 +73,16 @@ public class MealDetailsFragment extends Fragment implements MealDetailsInterfac
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity) requireActivity()).navView.setVisibility(View.GONE);
+        ((MainActivity) requireActivity()).btn_back.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         getDataFromSaveArgs();
 

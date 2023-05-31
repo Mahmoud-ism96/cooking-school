@@ -1,9 +1,9 @@
-package com.example.mycook.account.view;
+package com.example.mycook.main.view;
 
 import com.example.mycook.model.Meal;
 
 import java.util.List;
 
-public interface AccountInterface {
+public interface MainInterface {
     public void getAllStoredMeals(List<Meal> meal);
 }

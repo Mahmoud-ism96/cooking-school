@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface MainPresenterInterface {
     public void insertAllMeals(List<Meal> meals);
+
+    public void getStoredMeals();
+
 }
