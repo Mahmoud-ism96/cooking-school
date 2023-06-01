@@ -8,6 +8,7 @@ Cooking School is an Android application designed to provide users with a compre
 - [Features](#features)
 - [API Reference](#api-reference)
 - [Technologies Used](#technologies-used)
+- [MVP Architecture Pattern](#mvp-architecture-pattern)
 - [Installation](#installation)
 - [Contributing](#contributing)
 - [License](#license)
@@ -46,6 +47,27 @@ Cooking School is an Android application designed to provide users with a compre
 - **Carousel Layout Manager**: Used for creating a carousel-like layout for displaying cooking tutorials.
 - **YouTube Player API**: Integrated for playing cooking tutorial videos within the app.
 - **RxJava**: A reactive programming library used for asynchronous and event-based programming.
+
+## MVP Architecture Pattern
+Cooking School follows the Model-View-Presenter (MVP) architecture pattern for separating the presentation layer from the business logic and data layer. The MVP pattern consists of three main components:
+
+**Model**: The data layer of the application that handles data operations such as retrieving and storing data. In Cooking School, the model component is responsible for retrieving recipe data from the API and storing user data using Room and Firebase Realtime Database.
+
+**View**: The user interface layer that displays data and handles user input. In Cooking School, the view component is responsible for displaying recipe and user data to the user and handling user interactions.
+
+**Presenter**: The middleman between the view and the model component that handles business logic and acts as a mediator between the two. In Cooking School, the presenter component is responsible for retrieving recipe data from the model component and passing it to the view component for display. The presenter also handles user input from the view and updates the model accordingly.
+
+The MVP pattern provides several benefits, such as:
+
+Separation of concerns: The MVP pattern separates the presentation layer from the business logic and data layer, making it easier to maintain and modify the application.
+
+**Testability**: The MVP pattern makes it easier to test the application since the business logic is separated from the view layer.
+
+**Scalability**: The MVP pattern makes it easier to add new features and modify existing ones since the code is organized into separate components.
+
+Cooking School's implementation of theMVP pattern can be seen in the code structure, where each activity or fragment has a corresponding presenter and model class. The presenter class handles business logic and communicates with the model to retrieve or store data, while the view class handles UI updates and user interactions and communicates with the presenter.
+
+Overall, the MVP pattern helps Cooking School to provide a scalable, testable, and maintainable architecture, making it easier to develop and improve the application over time.
 
 ## Installation
 
